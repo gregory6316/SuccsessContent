@@ -1,2 +1,2 @@
 # SuccsessContent
-Python colaborative project for uneex course 
+Python collaborative project for uneex course 
