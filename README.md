@@ -4,3 +4,10 @@ Python collaborative project for uneex course
 [UI concept](https://www.figma.com/file/FXHWjqIN4tdKqDirSu9XrQ/Untitled?node-id=0%3A1)
 
 Commit messages style: https://habr.com/ru/post/183646/
+
+
+How to init repository:
+```(bash)
+pip install -r requirements.txt
+pre-commit install
+```
