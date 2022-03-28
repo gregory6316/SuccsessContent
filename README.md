@@ -1,7 +1,7 @@
 # }{avau by SuccsessContent
 
 <img src = "./img/logo.png" align="right"
-	alt="SuccessContent Team" width="120" height="178">
+	alt="SuccessContent Team" width="120" height="120">
 
 Python collaborative project for uneex course
 
