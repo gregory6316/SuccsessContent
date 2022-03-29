@@ -30,5 +30,3 @@ msgid "У меня {0} яблоко"
 msgid_plural "У меня {0} яблок"
 msgstr[0] ""
 msgstr[1] ""
-
-
