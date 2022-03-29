@@ -5,9 +5,17 @@ repos:
     -   id: check-yaml
     -   id: end-of-file-fixer
     -   id: trailing-whitespace
--   repo: https://github.com/pycqa/pylint
-    rev: v2.12.2
+-   repo: local
     hooks:
     -   id: pylint
-        args:
-        - --max-line-length=120
+        name: pylint
+        entry: pylint
+        language: system
+        types: [python]
+        require_serial: true
+    -   id: pydocstyle
+        name: pydocstyle
+        entry: pydocstyle
+        language: system
+        types: [python]
+        require_serial: true
