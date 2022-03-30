@@ -1,0 +1,152 @@
+
+<!DOCTYPE html>
+
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>main &#8212; документация Tupper&#39;s formula 0.0.0.0.0.0.0.1</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/translations.js"></script>
+    <link rel="index" title="Алфавитный указатель" href="../genindex.html" />
+    <link rel="search" title="Поиск" href="../search.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Исходный код main</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">formula</span>
+<span class="kn">import</span> <span class="nn">display</span>
+<span class="kn">import</span> <span class="nn">config</span> <span class="k">as</span> <span class="nn">cfg</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">.. module:: main</span>
+<span class="sd">   :synopsis: </span>
+<span class="sd">       Данный модуль читает значение k из k.txt и выводит результат</span>
+
+<span class="sd">.. moduleauthor:: SuccsessContent &lt;github.com/SuccsessContent&gt;</span>
+
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="main"><a class="viewcode-back" href="../index.html#main.main">[документация]</a><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    **main**</span>
+
+<span class="sd">    Программа по заданному значению выводит график функции Таппера.</span>
+<span class="sd">    Информация о модулях ниже.</span>
+
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">BASE_DIR</span> <span class="o">+</span> <span class="s2">&quot;/source/k.txt&quot;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">k_txt</span><span class="p">:</span>
+        <span class="n">k</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">k_txt</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+
+    <span class="n">screen</span> <span class="o">=</span> <span class="n">display</span><span class="o">.</span><span class="n">create_screen</span><span class="p">(</span>
+        <span class="n">cfg</span><span class="o">.</span><span class="n">SCREEN_TITLE</span><span class="p">,</span> <span class="n">cfg</span><span class="o">.</span><span class="n">SCREEN_WIDTH</span><span class="p">,</span> <span class="n">cfg</span><span class="o">.</span><span class="n">SCREEN_HEIGHT</span><span class="p">)</span>
+
+    <span class="n">_NUMBER_OF_BITMAP_COLUMNS</span> <span class="o">=</span> <span class="mi">106</span>
+    <span class="n">_NUMBER_OF_BITMAP_ROWS</span> <span class="o">=</span> <span class="mi">17</span>
+    <span class="n">START_X</span> <span class="o">=</span> <span class="o">-</span><span class="p">(</span><span class="n">_NUMBER_OF_BITMAP_COLUMNS</span> <span class="o">*</span> <span class="n">cfg</span><span class="o">.</span><span class="n">PIXEL_SIZE</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+    <span class="n">START_Y</span> <span class="o">=</span> <span class="o">-</span><span class="p">(</span><span class="n">_NUMBER_OF_BITMAP_ROWS</span> <span class="o">*</span> <span class="n">cfg</span><span class="o">.</span><span class="n">PIXEL_SIZE</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+
+    <span class="n">x</span> <span class="o">=</span> <span class="n">START_X</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">START_Y</span>
+    <span class="n">turtle</span> <span class="o">=</span> <span class="n">display</span><span class="o">.</span><span class="n">create_turtle</span><span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">PIXEL_SIZE</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">column</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">_NUMBER_OF_BITMAP_COLUMNS</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">_NUMBER_OF_BITMAP_ROWS</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">formula</span><span class="o">.</span><span class="n">should_pixel_be_drawn</span><span class="p">(</span><span class="n">column</span><span class="p">,</span> <span class="n">row</span> <span class="o">+</span> <span class="n">k</span><span class="p">):</span>
+                <span class="n">display</span><span class="o">.</span><span class="n">draw_pixel</span><span class="p">(</span><span class="n">turtle</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+
+            <span class="n">y</span> <span class="o">+=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">PIXEL_SIZE</span>
+
+        <span class="n">screen</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">START_Y</span>
+        <span class="n">x</span> <span class="o">+=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">PIXEL_SIZE</span>
+
+    <span class="n">screen</span><span class="o">.</span><span class="n">mainloop</span><span class="p">()</span></div>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">Tupper's formula</a></h1>
+
+
+
+
+
+
+
+
+<h3>Навигация</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Код модуля</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Быстрый поиск</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Искать" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2022, SuccsessContent.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.5.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>
