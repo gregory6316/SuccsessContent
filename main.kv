@@ -1,0 +1,24 @@
+MDNavigationLayout:
+    padding: [15,15]
+    orientation: 'vertical'
+    MDToolbar:
+        id: toolbar
+        title: "}{avau"
+        elevation: 10
+        pos_hint: {'top': 1}
+        text_halign: "center"
+        anchor_title: "center"
+
+    ScreenManager:
+        id: screen_manager
+
+        Screen:
+            name: "tipscreen1"
+            HelloScreen:
+
+        Screen:
+            name: "tipscreen2"
+            MoodRating:
+
+    MDNavigationDrawer:
+        id: nav_drawer

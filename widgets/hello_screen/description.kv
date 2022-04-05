@@ -1,0 +1,13 @@
+<HelloScreen>:
+    orientation: 'vertical'
+    MDFloatLayout:
+        MDLabel:
+            id: task_label
+            halign: 'center'
+            markup: True
+            text: "[u][size=24][b]Powered by[/b][/size][/u]\nSuccessContent"
+            pos_hint: {'y': -0.45}
+        MDRectangleFlatButton:
+            text: "Start your jorney"
+            pos_hint: {"center_x": 0.5, "center_y": 0.5}
+            on_press: app.callback("HelloScreen.start")
