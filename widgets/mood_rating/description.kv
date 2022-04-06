@@ -1,0 +1,17 @@
+<MoodRating>:
+    orientation: 'vertical'
+    MoodSlider:
+        id: "mood_rating_slider"
+        min: 0
+        max: 100
+        value: 80
+        on_slider_release: self.set_callback(self.value, app.storage, graph_box)
+    MDRectangleFlatButton:
+        text: "Remove last rate"
+        pos_hint: {"center_x": 0.5, "center_y": 0.5}
+    MDBoxLayout:
+        Graph:
+            id: graph_box
+            xlabel:'Mood rate'
+            x_grid_label:True
+            x_grid:True
