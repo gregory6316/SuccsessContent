@@ -1,0 +1,29 @@
+<GreetingCard>:
+
+	MDLabel:
+		text: "Welcome to\n[b]}{avau![/b]"
+		text_size: self.size
+		font_size: 25
+		markup: True
+		halign: "center"
+		valign: "middle"
+
+	MDFillRoundFlatButton:
+		text: "Start!"
+		size_hint_x: 0.6
+		size_hint_y: 0.5
+		pos_hint: {"center_x": 0.5}
+		on_press: root.parent.animate_close_card(root)
+
+	MDRoundFlatButton:
+		text: "Rate us"
+		size_hint_x: 0.6
+		size_hint_y: 0.5
+		pos_hint: {"center_x": 0.5}
+
+	MDLabel:
+		text: "[u][size=24][b]Powered by[/b][/size][/u]\nSuccessContent"
+		text_size: self.size
+		markup: True
+		halign: "center"
+		valign: "middle"
