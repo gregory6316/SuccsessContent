@@ -27,7 +27,7 @@ class TestLocale:
         assert(widget.children[3].children[0].xlabel == 'Mood rate')
 
 
-   def test_mood_screen(self):
+    def test_mood_screen(self):
 
         app = MainApp()
         Builder.load_string(MoodScreen.get_descritpion())
@@ -36,5 +36,5 @@ class TestLocale:
         assert(widget.children[0].children[1].text == 'Rate us')
         assert(widget.children[0].children[2].text == 'Start!')
         assert(widget.children[0].children[3].text == 'Welcome to\n[b]}{avau![/b]')
-        assert(widget.children[3].children[0].xlabel == 'Mood rate')
+
 
