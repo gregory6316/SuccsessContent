@@ -1,0 +1,257 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>main &#8212; }{avau 0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for main</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;File with application entry point and intercomponents communication controller.&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">kivy.lang</span> <span class="kn">import</span> <span class="n">Builder</span>
+<span class="kn">from</span> <span class="nn">kivy.storage.dictstore</span> <span class="kn">import</span> <span class="n">DictStore</span>
+<span class="kn">from</span> <span class="nn">kivy.uix.screenmanager</span> <span class="kn">import</span> <span class="n">ScreenManager</span>
+<span class="kn">from</span>  <span class="nn">kivy.uix.boxlayout</span> <span class="kn">import</span> <span class="n">BoxLayout</span>
+<span class="kn">from</span> <span class="nn">kivymd.app</span> <span class="kn">import</span> <span class="n">MDApp</span>
+<span class="kn">import</span> <span class="nn">locale</span>
+<span class="kn">import</span> <span class="nn">gettext</span>
+<span class="kn">from</span> <span class="nn">widgets.mood_screen</span> <span class="kn">import</span> <span class="n">MoodScreen</span>
+<span class="kn">from</span> <span class="nn">widgets.mood_rating</span> <span class="kn">import</span> <span class="n">MoodRating</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">.. module:: main</span>
+<span class="sd">   :synopsis: </span>
+<span class="sd">       Main module for connecting widgets and running app</span>
+
+<span class="sd">.. moduleauthor:: SuccsessContent &lt;github.com/SuccsessContent&gt;</span>
+
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="setlocale"><a class="viewcode-back" href="../index.html#main.setlocale">[docs]</a><span class="k">def</span> <span class="nf">setlocale</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">      </span>
+<span class="sd">      </span>
+<span class="sd">    **setlocale**</span>
+
+<span class="sd">    Function for setting locale</span>
+
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">loc</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">l</span> <span class="o">=</span> <span class="n">locale</span><span class="o">.</span><span class="n">getdefaultlocale</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">l</span> <span class="o">=</span> <span class="n">loc</span>
+    <span class="n">lc</span> <span class="o">=</span> <span class="n">gettext</span><span class="o">.</span><span class="n">translation</span><span class="p">(</span><span class="s1">&#39;main&#39;</span><span class="p">,</span> <span class="n">localedir</span><span class="o">=</span><span class="s1">&#39;locales&#39;</span><span class="p">,</span> <span class="n">languages</span><span class="o">=</span><span class="p">[</span><span class="n">l</span><span class="p">])</span>
+    <span class="n">lc</span><span class="o">.</span><span class="n">install</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">lc</span><span class="o">.</span><span class="n">gettext</span><span class="p">,</span> <span class="n">lc</span><span class="o">.</span><span class="n">ngettext</span></div>
+ 
+<div class="viewcode-block" id="HelloScreenManager"><a class="viewcode-back" href="../index.html#main.HelloScreenManager">[docs]</a><span class="k">class</span> <span class="nc">HelloScreenManager</span><span class="p">(</span><span class="n">ScreenManager</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    **HelloScreenManager**</span>
+
+<span class="sd">    Screen Manager with action on first run of app.</span>
+
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Init this class.&quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+    <span class="c1">#Do not delete!</span>
+    <span class="c1">#def __init__(self, **kwargs):</span>
+    <span class="c1">#    super().__init__(**kwargs)</span>
+    <span class="c1">#</span>
+    <span class="c1">#    mood_screen = MoodScreen(</span>
+    <span class="c1">#        inited = False,</span>
+    <span class="c1">#        name = &quot;hello screen&quot;</span>
+    <span class="c1">#    )</span>
+
+        <span class="c1">#mood_screen.add_widget(</span>
+        <span class="c1">#    CurrentState(&#39;emoticon-outline&#39;, &#39;Hello&#39;)</span>
+        <span class="c1">#)</span>
+        <span class="c1">#sleep_screen = SleepScreen(</span>
+        <span class="c1">#    name = &quot;sleep screen&quot;</span>
+        <span class="c1">#)</span>
+        <span class="c1">#</span>
+        <span class="c1">#food_screen = FoodScreen(</span>
+        <span class="c1">#    name = &quot;food screen&quot;</span>
+        <span class="c1">#)</span>
+        <span class="c1">#</span>
+        <span class="c1">#activity_screen = ActivityScreen(</span>
+        <span class="c1">#    name = &quot;activity screen&quot;</span>
+        <span class="c1">#)</span>
+        <span class="c1">#self.add_widget(mood_screen)</span>
+        <span class="c1">#self.add_widget(sleep_screen)</span>
+        <span class="c1">#self.add_widget(food_screen)</span>
+        <span class="c1">#self.add_widget(activity_screen)</span>
+
+<div class="viewcode-block" id="MainApp"><a class="viewcode-back" href="../index.html#main.MainApp">[docs]</a><span class="k">class</span> <span class="nc">MainApp</span><span class="p">(</span><span class="n">MDApp</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    **MainApp**</span>
+
+<span class="sd">    Main class that controls communication between widgets, components and storage.</span>
+
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Init this class.&quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">ngettext</span> <span class="o">=</span> <span class="n">setlocale</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">storage</span> <span class="o">=</span> <span class="n">DictStore</span><span class="p">(</span><span class="s2">&quot;storage.dict&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">inited</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="c1">#self.init_storage()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">init_widgets</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s2">&quot;}{avau&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mood_button</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s2">&quot;Mood&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sleep_button</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s2">&quot;Sleep&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">food_button</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s2">&quot;Food&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">activity_button</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s2">&quot;Activity&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hi</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s2">&quot;Welcome to</span><span class="se">\n</span><span class="s2">[b]}{avau![/b]&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">start</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s2">&quot;Start!&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rate</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s2">&quot;Rate us&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">company</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s2">&quot;[u][size=24][b]Powered by[/b][/size][/u]</span><span class="se">\n</span><span class="s2">SuccessContent&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">theme_cls</span><span class="o">.</span><span class="n">primary_palette</span> <span class="o">=</span> <span class="s2">&quot;Green&quot;</span>  <span class="c1"># &quot;Purple&quot;, &quot;Red&quot;</span>
+
+    <span class="c1">#def init_storage(self):</span>
+    <span class="c1">#    &quot;&quot;&quot;Fill storage for the first run.&quot;&quot;&quot;</span>
+    <span class="c1">#    if not self.storage.exists(&quot;inited&quot;):</span>
+    <span class="c1">#        # init storage</span>
+    <span class="c1">#        self.storage.put(&quot;inited&quot;, values=1)</span>
+    <span class="c1">#        self.storage.put(&quot;mood_history&quot;, values=[])</span>
+
+<div class="viewcode-block" id="MainApp.init_widgets"><a class="viewcode-back" href="../index.html#main.MainApp.init_widgets">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">init_widgets</span><span class="p">():</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">        **init_widgets**</span>
+
+<span class="sd">        Load kv files for each widget.</span>
+
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">for</span> <span class="n">widget</span> <span class="ow">in</span> <span class="p">[</span><span class="n">MoodScreen</span><span class="p">,</span> <span class="n">MoodRating</span><span class="p">]:</span>
+            <span class="n">Builder</span><span class="o">.</span><span class="n">load_string</span><span class="p">(</span><span class="n">widget</span><span class="o">.</span><span class="n">get_descritpion</span><span class="p">())</span></div></div>
+
+    <span class="c1">#def callback(self, event: str, addtional_info: dict = None):</span>
+    <span class="c1">#    &quot;&quot;&quot;Process callbacks with communications between widgets.&quot;&quot;&quot;</span>
+    <span class="c1">#    print(f&quot;Event! {event}&quot;)</span>
+    <span class="c1">#    print(f&quot;Value! {addtional_info}&quot;)</span>
+    <span class="c1">#    widget, event_type = event.split(&quot;.&quot;)</span>
+    <span class="c1">#    if widget == &quot;HelloScreen&quot;:</span>
+    <span class="c1">#        if event_type == &quot;start&quot;:</span>
+    <span class="c1">#            self.root.ids.screen_manager.current = &quot;tipscreen2&quot;</span>
+    <span class="c1">#    elif widget == &quot;MoodRating&quot;:</span>
+    <span class="c1">#        pass</span>
+
+<div class="viewcode-block" id="main"><a class="viewcode-back" href="../index.html#main.main">[docs]</a><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">        **main**</span>
+
+<span class="sd">        Run the application.</span>
+
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">MainApp</span><span class="p">()</span><span class="o">.</span><span class="n">run</span><span class="p">()</span></div>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">}{avau</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2022, SuccsessContent.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.5.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

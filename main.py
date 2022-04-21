@@ -3,14 +3,53 @@
 from kivy.lang import Builder
 from kivy.storage.dictstore import DictStore
 from kivy.uix.screenmanager import ScreenManager
-
+from  kivy.uix.boxlayout import BoxLayout
 from kivymd.app import MDApp
-
+import locale
+import gettext
 from widgets.mood_screen import MoodScreen
 from widgets.mood_rating import MoodRating
 
+"""
+.. module:: main
+   :synopsis: 
+       Main module for connecting widgets and running app
+
+.. moduleauthor:: SuccsessContent <github.com/SuccsessContent>
+
+
+"""
+
+def setlocale(loc=None):
+    
+    """
+      
+      
+    **setlocale**
+
+    Function for setting locale
+
+
+    """
+
+    if loc is None:
+        l = locale.getdefaultlocale()[0]
+    else:
+        l = loc
+    lc = gettext.translation('main', localedir='locales', languages=[l])
+    lc.install()
+    return lc.gettext, lc.ngettext
+ 
 class HelloScreenManager(ScreenManager):
-    """Screen Manager with action on first run of app."""
+    """
+
+    **HelloScreenManager**
+
+    Screen Manager with action on first run of app.
+
+
+    """
+
 
     def __init__(self, **kwargs):
         """Init this class."""
@@ -44,18 +83,33 @@ class HelloScreenManager(ScreenManager):
         #self.add_widget(activity_screen)
 
 class MainApp(MDApp):
-    """Main class that controls communication between widgets, components and storage."""
+    """
+
+    **MainApp**
+
+    Main class that controls communication between widgets, components and storage.
+
+
+    """
+
 
     def __init__(self, **kwargs):
         """Init this class."""
         super().__init__(**kwargs)
-
+        _, ngettext = setlocale()
         self.storage = DictStore("storage.dict")
         self.inited = False
-
         #self.init_storage()
         self.init_widgets()
-
+        self.title = _("}{avau")
+        self.mood_button = _("Mood")
+        self.sleep_button = _("Sleep")
+        self.food_button = _("Food")
+        self.activity_button = _("Activity")
+        self.hi = _("Welcome to\n[b]}{avau![/b]")
+        self.start = _("Start!")
+        self.rate = _("Rate us")
+        self.company = _("[u][size=24][b]Powered by[/b][/size][/u]\nSuccessContent")
         self.theme_cls.primary_palette = "Green"  # "Purple", "Red"
 
     #def init_storage(self):
@@ -67,7 +121,15 @@ class MainApp(MDApp):
 
     @staticmethod
     def init_widgets():
-        """Load kv files for each widget."""
+        """
+
+        **init_widgets**
+
+        Load kv files for each widget.
+
+
+        """
+
         for widget in [MoodScreen, MoodRating]:
             Builder.load_string(widget.get_descritpion())
 
@@ -83,7 +145,15 @@ class MainApp(MDApp):
     #        pass
 
 def main():
-    """Run the application."""
+    """
+
+        **main**
+
+        Run the application.
+
+
+    """
+
     MainApp().run()
 
 if __name__ == "__main__":

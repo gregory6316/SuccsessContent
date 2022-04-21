@@ -1,7 +1,7 @@
 <GreetingCard>:
-
+    id: greeting
 	MDLabel:
-		text: "Welcome to\n[b]}{avau![/b]"
+		text: app.hi
 		text_size: self.size
 		font_size: 25
 		markup: True
@@ -9,20 +9,20 @@
 		valign: "middle"
 
 	MDFillRoundFlatButton:
-		text: "Start!"
+		text: app.start
 		size_hint_x: 0.6
 		size_hint_y: 0.5
 		pos_hint: {"center_x": 0.5}
 		on_press: root.parent.animate_close_card(root)
 
 	MDRoundFlatButton:
-		text: "Rate us"
+		text: app.rate
 		size_hint_x: 0.6
 		size_hint_y: 0.5
 		pos_hint: {"center_x": 0.5}
 
 	MDLabel:
-		text: "[u][size=24][b]Powered by[/b][/size][/u]\nSuccessContent"
+		text: app.company
 		text_size: self.size
 		markup: True
 		halign: "center"

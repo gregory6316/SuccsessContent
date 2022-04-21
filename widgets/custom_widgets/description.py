@@ -8,37 +8,92 @@ from kivymd.uix.button import MDIconButton
 from kivymd.uix.label import MDLabel
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.behaviors import RoundedRectangularElevationBehavior
+import locale
+import gettext
+
+"""
+.. module:: custom_widgets
+   :synopsis: 
+       Module for custom widgets
+
+.. moduleauthor:: SuccsessContent <github.com/SuccsessContent>
+
+
+"""
+
+def setlocale(loc=None):
+    if loc is None:
+        l = locale.getdefaultlocale()[0]
+    else:
+        l = loc
+    lc = gettext.translation('custom', localedir='locales', languages=[l])
+    lc.install()
+    return lc.gettext, lc.ngettext, l
 
 class CustomCard(MDCard, RoundedRectangularElevationBehavior):
-    """Base class for scrollable cards in screens."""
+    """
+
+    **CustomCard**
+
+    Base class for scrollable cards in screens.
+
+
+    """
 
     def __init__(self, **kwargs):
-        """Init this class. Sets radius for card, and independence of size from window."""
+        """
+
+        **CustomCard.__init__**
+
+        Init this class. Sets radius for card, and independence of size from window.
+
+
+        """
         super().__init__(**kwargs)
         self.radius = [20]
         self.size_hint_y = None
         self.size_hint_x = 0.8
 
 class LabelUnderIconWidget(MDBoxLayout):
-    """Widget to paste IconButton and Label vertically."""
+    """
+
+    **LabelUnderIconWidget**
+
+    Widget to paste IconButton and Label vertically.
+
+
+    """
 
     def change_icon(self, new_icon: str) -> None:
-        """Change button icon to new icon.
+        """
+
+        **LabelUnderIconWidget.change_icon**
+
+        Change button icon to new icon.
 
         Args:
         new_icon: str - new icons kivymd name.
 
         Returns:
         None.
+
+
         """
+
         print("Day is marked")
         self.image.icon = new_icon
 
     def __init__(self, icon, text, new_icon_on_action=None, **kwargs):
-        """Init this widget.
+        """
+
+        **LabelUnderIconWidget.__init__**
+
+        Init this widget.
 
         Adds MDIconButton and MDLabel vertically.
         Sets on_press to MDIconButton.
+
+
         """
         super().__init__(**kwargs)
         self.orientation = "vertical"
@@ -61,18 +116,34 @@ class LabelUnderIconWidget(MDBoxLayout):
         self.add_widget(self.label)
 
 class CurrentDayCard(CustomCard):
-    """Card with icon, current date and some message."""
+    """
+
+    **CurrentDayCard**
+
+    Card with icon, current date and some message.
+
+
+    """
+    
 
     def __init__(self, icon="emoticon-outline", msg="", **kwargs):
-        """Init this card.
+        """
+
+        **CurrentDayCard.__init__**
+
+        Init this card.
 
         Sets 'emoticon-outline' icon as default.
         Sets empty message as default.
+
+
         """
+       
         super().__init__(**kwargs)
 
         self.height = 60
-
+        _, ngettext, loc = setlocale()
+        locale.setlocale(locale.LC_TIME, loc)
         today = datetime.now()
         self.day = today.day
         self.weekday = today.strftime("%A")
@@ -96,19 +167,35 @@ class CurrentDayCard(CustomCard):
         self.add_widget(date_cheer_label)
 
 class DaysInRowCard(CustomCard):
-    """Card with title and list of 6 last days, their states, and current day with empty state."""
+    """
 
+    **DaysInRowCard**
+
+    Card with title and list of 6 last days, their states, and current day with empty state.
+
+
+    """
+    
     def __init__(self, storage=None, **kwargs):
-        """Init card."""
+        """
+
+        **DaysInRowCard.__init__**
+
+        Init this card.
+
+        """
         if not storage:
             print("TODO storage")
 
         super().__init__(**kwargs)
 
-        self.orientation = "vertical"
 
+
+        self.orientation = "vertical"
+        _, ngettext, loc = setlocale()
+        locale.setlocale(locale.LC_TIME, loc)
         title = MDLabel(
-            text="Days in a Row",
+            text=_("Days in a Row"),
             size_hint_y=None,
             height=40,
             padding=(15, 0)
@@ -142,42 +229,106 @@ class DaysInRowCard(CustomCard):
         self.add_widget(days_layout)
 
 class RateHabit(CustomCard):
-    """Card to rate your habit today."""
+    """
+
+    **RateHabit**
+
+    Card to rate your habit today.
+
+
+    """
 
     def __init__(self, **kwargs):
-        """Init card."""
+        """
+
+        **RateHabit.__init__**
+
+        Init this card.
+
+        """
         super().__init__(**kwargs)
         print("Тут должен оцениваться сегодняшний habit")
 
 class Chart(CustomCard):
-    """MatPlot of habbit."""
+    """
+
+    **Chart**
+
+    MatPlot of habbit.
+
+
+    """
 
     def __init__(self, **kwargs):
-        """Init card."""
+        """
+
+        **Chart.__init__**
+
+        Init this card.
+
+        """
         super().__init__(**kwargs)
         print("Тут должен рисоваться график чего-то")
 
 class Achievements(CustomCard):
-    """Card with achievements."""
+    """
+
+    **Achievements**
+
+    Card with achievements.
+
+
+    """
 
     def __init__(self, **kwargs):
-        """Init card."""
+        """
+
+        **Achievements.__init__**
+
+        Init this card.
+
+        """
         super().__init__(**kwargs)
         print("Можно ачивки сделать, и их здесь выводить")
 
 class Count(CustomCard):
-    """Count statistics."""
+    """
+
+    **Count**
+
+    Count statistics.
+
+
+    """
 
     def __init__(self, **kwargs):
-        """Init card."""
+        """
+
+        **Count.__init__**
+
+        Init this card.
+
+        """
         super().__init__(**kwargs)
         print("Здесь просто выводится статистика " + \
             "по каждой оценке: сколько раз оценка 5, ...")
 
 class Calendar(CustomCard):
-    """Simply Calendar."""
+    """
+
+    **Calendar**
+
+    Simply Calendar.
+    
+    """
 
     def __init__(self, **kwargs):
-        """Init card."""
+        """
+
+        **Calendar.__init__**
+
+        Init this card.
+
+        """
         super().__init__(**kwargs)
         print("Просто каледнарь с отметками о днях")

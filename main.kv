@@ -1,8 +1,7 @@
-MDScreen:
-
+MDScreen:    
 	MDToolbar:
 		id: toolbar
-		title: "}{avau"
+		title: app.title
 		elevation: 10
 		pos_hint: {'top': 1}
 		text_halign: "center"
@@ -13,6 +12,7 @@ MDScreen:
 	MDNavigationLayout:
 
 		HelloScreenManager:
+			
 			size_hint_y: 1.0 - toolbar.height / root.height
 
 			MoodScreen:
@@ -31,25 +31,24 @@ MDScreen:
 		MDList:
 			OneLineIconListItem:
 				id: mood
-				text: "Mood"
-				on_release: print("Mood button")
+				text: app.mood_button
 				IconLeftWidget:
 					icon: "emoticon-outline"
 			OneLineIconListItem:
 				id: sleep
-				text: "Sleep"
+				text: app.sleep_button
 				on_release: print("Sleep button")
 				IconLeftWidget:
 					icon: "sleep"
 			OneLineIconListItem:
 				id: food
-				text: "Food"
+				text: app.food_button
 				on_release: print("Food button")
 				IconLeftWidget:
 					icon: "food-apple-outline"
 			OneLineIconListItem:
 				id: activity
-				text: "Activity"
+				text: app.activity_button
 				on_release: print("Activity button")
 				IconLeftWidget:
 					icon: "arm-flex-outline"

@@ -1,0 +1,380 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>}{avau by SuccsessContent &#8212; }{avau 0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="avau-by-succsesscontent">
+<h1>}{avau by SuccsessContent<a class="headerlink" href="#avau-by-succsesscontent" title="Permalink to this headline">¶</a></h1>
+<p>Python collaborative project for uneex course</p>
+<p><strong>}{avau</strong> is a mobile application for daily tracking of habbits, moods, exercises, and many more!</p>
+<section id="opportunities">
+<h2>Opportunities<a class="headerlink" href="#opportunities" title="Permalink to this headline">¶</a></h2>
+<p><strong>}{avau</strong> is professional self-imporvement mentor-app. It can track many sides of your life, helping you in becoming the better version of yourself.</p>
+<ul class="simple">
+<li><p>Make reflections of your daily life</p></li>
+<li><p>Analyze your habbits</p></li>
+<li><p>Analyze your sleeping</p></li>
+<li><p>Track the food you eat everyday</p></li>
+<li><p>Start and track exercising in your tempo</p></li>
+<li><p>Create goals</p></li>
+<li><p>Gather and explore your daily/weekly/mothly/year statistics</p></li>
+<li><p>Enjoy the pretty graphics</p></li>
+<li><p>Export your statisitcs in many extensions</p></li>
+</ul>
+</section>
+<section id="architecture">
+<h2>Architecture<a class="headerlink" href="#architecture" title="Permalink to this headline">¶</a></h2>
+<p>The application consists of 4 parts:</p>
+<ol class="arabic simple">
+<li><p>Application’s main loop. It’s the key part, hadnling the main loop and the entire data transfer between other parts.</p></li>
+<li><p>Logic part, including BaseTracker and it’s derivatives. BaseTracker is the main class of daily custom habbit trackers. The classes SleepingTracker, …, correspond to narrow tasks of relevant habbit tracking.</p></li>
+<li><p>Database handling part, including sqlite database, that stores users daily data. Also pandas library is used to gather statistics from data.</p></li>
+<li><p>GUI part, implemented via kivy, kivymd. It gets users prompt (e.g., pressing buttons, inputing texts, ets), and displays different graphics, plotted via pyplot/seaborn.</p></li>
+</ol>
+<p>Also, the application can export data and statistics in wide range of extensions. Implemented via pandas.</p>
+</section>
+<section id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<p>How to init repository:</p>
+<p><code class="docutils literal notranslate"><span class="pre">`</span>
+<span class="pre">(bash)</span>
+<span class="pre">pip</span> <span class="pre">install</span> <span class="pre">-r</span> <span class="pre">requirements.txt</span>
+<span class="pre">pre-commit</span> <span class="pre">install</span>
+<span class="pre">`</span></code></p>
+</section>
+<section id="other">
+<h2>Other<a class="headerlink" href="#other" title="Permalink to this headline">¶</a></h2>
+<p>Commit messages style: <a class="reference external" href="https://habr.com/ru/post/183646/">https://habr.com/ru/post/183646/</a></p>
+</section>
+<section id="documentation">
+<h2>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+<section id="module-main">
+<span id="main"></span><h2>main<a class="headerlink" href="#module-main" title="Permalink to this headline">¶</a></h2>
+<p>File with application entry point and intercomponents communication controller.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="main.HelloScreenManager">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main.</span></span><span class="sig-name descname"><span class="pre">HelloScreenManager</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/main.html#HelloScreenManager"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#main.HelloScreenManager" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>HelloScreenManager</strong></p>
+<p>Screen Manager with action on first run of app.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="main.MainApp">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">main.</span></span><span class="sig-name descname"><span class="pre">MainApp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/main.html#MainApp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#main.MainApp" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>MainApp</strong></p>
+<p>Main class that controls communication between widgets, components and storage.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="main.MainApp.init_widgets">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">init_widgets</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/main.html#MainApp.init_widgets"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#main.MainApp.init_widgets" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>init_widgets</strong></p>
+<p>Load kv files for each widget.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="main.main">
+<span class="sig-prename descclassname"><span class="pre">main.</span></span><span class="sig-name descname"><span class="pre">main</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/main.html#main"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#main.main" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>main</strong></p>
+<p>Run the application.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="main.setlocale">
+<span class="sig-prename descclassname"><span class="pre">main.</span></span><span class="sig-name descname"><span class="pre">setlocale</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">loc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/main.html#setlocale"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#main.setlocale" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>setlocale</strong></p>
+<p>Function for setting locale</p>
+</dd></dl>
+
+</section>
+<section id="module-custom_widgets">
+<span id="custom-widgets"></span><h2>custom_widgets<a class="headerlink" href="#module-custom_widgets" title="Permalink to this headline">¶</a></h2>
+<p>Module with custom cards.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="custom_widgets.Achievements">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">custom_widgets.</span></span><span class="sig-name descname"><span class="pre">Achievements</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/custom_widgets.html#Achievements"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#custom_widgets.Achievements" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>Achievements</strong></p>
+<p>Card with achievements.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="custom_widgets.Calendar">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">custom_widgets.</span></span><span class="sig-name descname"><span class="pre">Calendar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/custom_widgets.html#Calendar"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#custom_widgets.Calendar" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>Calendar</strong></p>
+<p>Simply Calendar.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="custom_widgets.Chart">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">custom_widgets.</span></span><span class="sig-name descname"><span class="pre">Chart</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/custom_widgets.html#Chart"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#custom_widgets.Chart" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>Chart</strong></p>
+<p>MatPlot of habbit.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="custom_widgets.Count">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">custom_widgets.</span></span><span class="sig-name descname"><span class="pre">Count</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/custom_widgets.html#Count"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#custom_widgets.Count" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>Count</strong></p>
+<p>Count statistics.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="custom_widgets.CurrentDayCard">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">custom_widgets.</span></span><span class="sig-name descname"><span class="pre">CurrentDayCard</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">icon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'emoticon-outline'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">msg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/custom_widgets.html#CurrentDayCard"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#custom_widgets.CurrentDayCard" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>CurrentDayCard</strong></p>
+<p>Card with icon, current date and some message.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="custom_widgets.CustomCard">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">custom_widgets.</span></span><span class="sig-name descname"><span class="pre">CustomCard</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/custom_widgets.html#CustomCard"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#custom_widgets.CustomCard" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>CustomCard</strong></p>
+<p>Base class for scrollable cards in screens.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="custom_widgets.DaysInRowCard">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">custom_widgets.</span></span><span class="sig-name descname"><span class="pre">DaysInRowCard</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">storage</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/custom_widgets.html#DaysInRowCard"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#custom_widgets.DaysInRowCard" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>DaysInRowCard</strong></p>
+<p>Card with title and list of 6 last days, their states, and current day with empty state.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="custom_widgets.LabelUnderIconWidget">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">custom_widgets.</span></span><span class="sig-name descname"><span class="pre">LabelUnderIconWidget</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">icon</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_icon_on_action</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/custom_widgets.html#LabelUnderIconWidget"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#custom_widgets.LabelUnderIconWidget" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>LabelUnderIconWidget</strong></p>
+<p>Widget to paste IconButton and Label vertically.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="custom_widgets.LabelUnderIconWidget.change_icon">
+<span class="sig-name descname"><span class="pre">change_icon</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_icon</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/custom_widgets.html#LabelUnderIconWidget.change_icon"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#custom_widgets.LabelUnderIconWidget.change_icon" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>LabelUnderIconWidget.change_icon</strong></p>
+<p>Change button icon to new icon.</p>
+<p>Args:
+new_icon: str - new icons kivymd name.</p>
+<p>Returns:
+None.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="custom_widgets.RateHabit">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">custom_widgets.</span></span><span class="sig-name descname"><span class="pre">RateHabit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/custom_widgets.html#RateHabit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#custom_widgets.RateHabit" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>RateHabit</strong></p>
+<p>Card to rate your habit today.</p>
+</dd></dl>
+
+</section>
+<section id="module-mood_screen">
+<span id="mood-screen"></span><h2>mood_screen<a class="headerlink" href="#module-mood_screen" title="Permalink to this headline">¶</a></h2>
+<p>Mood Screen.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="mood_screen.GreetingCard">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mood_screen.</span></span><span class="sig-name descname"><span class="pre">GreetingCard</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mood_screen.html#GreetingCard"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mood_screen.GreetingCard" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>GreetingCard</strong></p>
+<p>Card with greetings message in first run of app.</p>
+<p>Code is in description.kv file.</p>
+<dl class="simple">
+<dt>Contains:</dt><dd><p>“Welcome to }{avau” message.
+“Start!” button: closes greetin card.
+“Rate us” button: allows user to rate the app.
+“Powered by” message.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="mood_screen.MoodScreen">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mood_screen.</span></span><span class="sig-name descname"><span class="pre">MoodScreen</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mood_screen.html#MoodScreen"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mood_screen.MoodScreen" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>MoodScreen</strong></p>
+<p>Container for Mood Screen content.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="mood_screen.MoodScreen.animate_close_card">
+<span class="sig-name descname"><span class="pre">animate_close_card</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">widget</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mood_screen.html#MoodScreen.animate_close_card"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mood_screen.MoodScreen.animate_close_card" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>MoodScreen.animate_close_card</strong></p>
+<p>Animate greetins card’s closing.</p>
+<p>Args:
+widget - greetings card</p>
+<p>Returns:
+None</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mood_screen.MoodScreen.animate_open_card">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">animate_open_card</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">widget</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mood_screen.html#MoodScreen.animate_open_card"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mood_screen.MoodScreen.animate_open_card" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>MoodScreen.animate_open_card</strong></p>
+<p>Animate greetins card’s opening.</p>
+<p>Args:
+widget - greetings card.</p>
+<p>Returns:
+None.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mood_screen.MoodScreen.get_descritpion">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_descritpion</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/mood_screen.html#MoodScreen.get_descritpion"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mood_screen.MoodScreen.get_descritpion" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>MoodScreen.get_descritpion</strong></p>
+<p>Return kv description content.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mood_screen.MoodScreen.on_enter">
+<span class="sig-name descname"><span class="pre">on_enter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mood_screen.html#MoodScreen.on_enter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mood_screen.MoodScreen.on_enter" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>MoodScreen.on_enter</strong></p>
+<p>Start animation if screen is opened.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-mood_rating">
+<span id="display"></span><h2>display<a class="headerlink" href="#module-mood_rating" title="Permalink to this headline">¶</a></h2>
+<p>Screen with mood rating slider and chart.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="mood_rating.MoodRating">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mood_rating.</span></span><span class="sig-name descname"><span class="pre">MoodRating</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mood_rating.html#MoodRating"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mood_rating.MoodRating" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>MoodRating</strong></p>
+<p>Screen with mood rating slider and chart.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="mood_rating.MoodRating.get_descritpion">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_descritpion</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/mood_rating.html#MoodRating.get_descritpion"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mood_rating.MoodRating.get_descritpion" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>MoodRating.get_descritpion</strong></p>
+<p>Return content of description kv.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="mood_rating.MoodSlider">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">mood_rating.</span></span><span class="sig-name descname"><span class="pre">MoodSlider</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mood_rating.html#MoodSlider"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mood_rating.MoodSlider" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>MoodSlider</strong></p>
+<p>Slider for mood rating.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="mood_rating.MoodSlider.on_slider_release">
+<span class="sig-name descname"><span class="pre">on_slider_release</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/mood_rating.html#MoodSlider.on_slider_release"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mood_rating.MoodSlider.on_slider_release" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>MoodSlider.on_slider_release</strong></p>
+<p>Do nothing. We should declare func for each event.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mood_rating.MoodSlider.on_touch_up">
+<span class="sig-name descname"><span class="pre">on_touch_up</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">touch</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mood_rating.html#MoodSlider.on_touch_up"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mood_rating.MoodSlider.on_touch_up" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>MoodSlider.on_touch_up</strong></p>
+<p>Dispatch event on_slider_release if only touch up triggered by this class.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="mood_rating.MoodSlider.set_callback">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">set_callback</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">storage</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">graph_box</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/mood_rating.html#MoodSlider.set_callback"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mood_rating.MoodSlider.set_callback" title="Permalink to this definition">¶</a></dt>
+<dd><p><strong>MoodSlider.set_callback</strong></p>
+<p>Update storage and redraw chart.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="indices-and-tables">
+<h2>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
+<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
+<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
+</ul>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="#">}{avau</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="#">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2022, SuccsessContent.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.5.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
