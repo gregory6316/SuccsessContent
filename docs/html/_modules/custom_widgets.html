@@ -1,0 +1,431 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>custom_widgets &#8212; }{avau 0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for custom_widgets</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Module with custom cards.&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">import</span> <span class="nn">calendar</span>
+
+<span class="kn">from</span> <span class="nn">kivymd.uix.card</span> <span class="kn">import</span> <span class="n">MDCard</span>
+<span class="kn">from</span> <span class="nn">kivymd.uix.button</span> <span class="kn">import</span> <span class="n">MDIconButton</span>
+<span class="kn">from</span> <span class="nn">kivymd.uix.label</span> <span class="kn">import</span> <span class="n">MDLabel</span>
+<span class="kn">from</span> <span class="nn">kivymd.uix.boxlayout</span> <span class="kn">import</span> <span class="n">MDBoxLayout</span>
+<span class="kn">from</span> <span class="nn">kivymd.uix.behaviors</span> <span class="kn">import</span> <span class="n">RoundedRectangularElevationBehavior</span>
+<span class="kn">import</span> <span class="nn">locale</span>
+<span class="kn">import</span> <span class="nn">gettext</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">.. module:: custom_widgets</span>
+<span class="sd">   :synopsis: </span>
+<span class="sd">       Module for custom widgets</span>
+
+<span class="sd">.. moduleauthor:: SuccsessContent &lt;github.com/SuccsessContent&gt;</span>
+
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="k">def</span> <span class="nf">setlocale</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">loc</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">l</span> <span class="o">=</span> <span class="n">locale</span><span class="o">.</span><span class="n">getdefaultlocale</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">l</span> <span class="o">=</span> <span class="n">loc</span>
+    <span class="n">lc</span> <span class="o">=</span> <span class="n">gettext</span><span class="o">.</span><span class="n">translation</span><span class="p">(</span><span class="s1">&#39;custom&#39;</span><span class="p">,</span> <span class="n">localedir</span><span class="o">=</span><span class="s1">&#39;locales&#39;</span><span class="p">,</span> <span class="n">languages</span><span class="o">=</span><span class="p">[</span><span class="n">l</span><span class="p">])</span>
+    <span class="n">lc</span><span class="o">.</span><span class="n">install</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">lc</span><span class="o">.</span><span class="n">gettext</span><span class="p">,</span> <span class="n">lc</span><span class="o">.</span><span class="n">ngettext</span><span class="p">,</span> <span class="n">l</span>
+
+<div class="viewcode-block" id="CustomCard"><a class="viewcode-back" href="../index.html#custom_widgets.CustomCard">[docs]</a><span class="k">class</span> <span class="nc">CustomCard</span><span class="p">(</span><span class="n">MDCard</span><span class="p">,</span> <span class="n">RoundedRectangularElevationBehavior</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    **CustomCard**</span>
+
+<span class="sd">    Base class for scrollable cards in screens.</span>
+
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">        **CustomCard.__init__**</span>
+
+<span class="sd">        Init this class. Sets radius for card, and independence of size from window.</span>
+
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">radius</span> <span class="o">=</span> <span class="p">[</span><span class="mi">20</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">size_hint_y</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">size_hint_x</span> <span class="o">=</span> <span class="mf">0.8</span></div>
+
+<div class="viewcode-block" id="LabelUnderIconWidget"><a class="viewcode-back" href="../index.html#custom_widgets.LabelUnderIconWidget">[docs]</a><span class="k">class</span> <span class="nc">LabelUnderIconWidget</span><span class="p">(</span><span class="n">MDBoxLayout</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    **LabelUnderIconWidget**</span>
+
+<span class="sd">    Widget to paste IconButton and Label vertically.</span>
+
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="LabelUnderIconWidget.change_icon"><a class="viewcode-back" href="../index.html#custom_widgets.LabelUnderIconWidget.change_icon">[docs]</a>    <span class="k">def</span> <span class="nf">change_icon</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_icon</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">        **LabelUnderIconWidget.change_icon**</span>
+
+<span class="sd">        Change button icon to new icon.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">        new_icon: str - new icons kivymd name.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">        None.</span>
+
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Day is marked&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">icon</span> <span class="o">=</span> <span class="n">new_icon</span></div>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">icon</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">new_icon_on_action</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">        **LabelUnderIconWidget.__init__**</span>
+
+<span class="sd">        Init this widget.</span>
+
+<span class="sd">        Adds MDIconButton and MDLabel vertically.</span>
+<span class="sd">        Sets on_press to MDIconButton.</span>
+
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">orientation</span> <span class="o">=</span> <span class="s2">&quot;vertical&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">image</span> <span class="o">=</span> <span class="n">MDIconButton</span><span class="p">(</span>
+            <span class="n">icon</span><span class="o">=</span><span class="n">icon</span><span class="p">,</span>
+            <span class="n">pos_hint</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;center_x&quot;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">},</span>
+        <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">new_icon_on_action</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">image</span><span class="o">.</span><span class="n">on_press</span> <span class="o">=</span> <span class="k">lambda</span> <span class="o">*</span><span class="n">x</span><span class="p">:</span> \
+                <span class="bp">self</span><span class="o">.</span><span class="n">change_icon</span><span class="p">(</span><span class="n">new_icon_on_action</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">label</span> <span class="o">=</span> <span class="n">MDLabel</span><span class="p">(</span>
+            <span class="n">text</span><span class="o">=</span><span class="n">text</span><span class="p">,</span>
+            <span class="n">halign</span><span class="o">=</span><span class="s2">&quot;center&quot;</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_widget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">image</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_widget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="CurrentDayCard"><a class="viewcode-back" href="../index.html#custom_widgets.CurrentDayCard">[docs]</a><span class="k">class</span> <span class="nc">CurrentDayCard</span><span class="p">(</span><span class="n">CustomCard</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    **CurrentDayCard**</span>
+
+<span class="sd">    Card with icon, current date and some message.</span>
+
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">icon</span><span class="o">=</span><span class="s2">&quot;emoticon-outline&quot;</span><span class="p">,</span> <span class="n">msg</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">        **CurrentDayCard.__init__**</span>
+
+<span class="sd">        Init this card.</span>
+
+<span class="sd">        Sets &#39;emoticon-outline&#39; icon as default.</span>
+<span class="sd">        Sets empty message as default.</span>
+
+
+<span class="sd">        &quot;&quot;&quot;</span>
+       
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">height</span> <span class="o">=</span> <span class="mi">60</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">ngettext</span><span class="p">,</span> <span class="n">loc</span> <span class="o">=</span> <span class="n">setlocale</span><span class="p">()</span>
+        <span class="n">locale</span><span class="o">.</span><span class="n">setlocale</span><span class="p">(</span><span class="n">locale</span><span class="o">.</span><span class="n">LC_TIME</span><span class="p">,</span> <span class="n">loc</span><span class="p">)</span>
+        <span class="n">today</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">day</span> <span class="o">=</span> <span class="n">today</span><span class="o">.</span><span class="n">day</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">weekday</span> <span class="o">=</span> <span class="n">today</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%A&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">month</span> <span class="o">=</span> <span class="n">today</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%b&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">icon</span> <span class="o">=</span> <span class="n">icon</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">msg</span> <span class="o">=</span> <span class="n">msg</span>
+
+        <span class="n">left_icon</span> <span class="o">=</span> <span class="n">MDIconButton</span><span class="p">(</span>
+            <span class="n">icon</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">icon</span><span class="p">,</span>
+            <span class="n">pos_hint</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;center_y&quot;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">}</span>
+        <span class="p">)</span>
+
+        <span class="n">date_cheer_label</span> <span class="o">=</span> <span class="n">MDLabel</span><span class="p">(</span>
+            <span class="n">text</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">weekday</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;, &quot;</span> <span class="o">+</span> \
+                <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">day</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">month</span><span class="p">)</span> <span class="o">+</span> \
+                <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">msg</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_widget</span><span class="p">(</span><span class="n">left_icon</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_widget</span><span class="p">(</span><span class="n">date_cheer_label</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="DaysInRowCard"><a class="viewcode-back" href="../index.html#custom_widgets.DaysInRowCard">[docs]</a><span class="k">class</span> <span class="nc">DaysInRowCard</span><span class="p">(</span><span class="n">CustomCard</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    **DaysInRowCard**</span>
+
+<span class="sd">    Card with title and list of 6 last days, their states, and current day with empty state.</span>
+
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">storage</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">        **DaysInRowCard.__init__**</span>
+
+<span class="sd">        Init this card.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">storage</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;TODO storage&quot;</span><span class="p">)</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">orientation</span> <span class="o">=</span> <span class="s2">&quot;vertical&quot;</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">ngettext</span><span class="p">,</span> <span class="n">loc</span> <span class="o">=</span> <span class="n">setlocale</span><span class="p">()</span>
+        <span class="n">locale</span><span class="o">.</span><span class="n">setlocale</span><span class="p">(</span><span class="n">locale</span><span class="o">.</span><span class="n">LC_TIME</span><span class="p">,</span> <span class="n">loc</span><span class="p">)</span>
+        <span class="n">title</span> <span class="o">=</span> <span class="n">MDLabel</span><span class="p">(</span>
+            <span class="n">text</span><span class="o">=</span><span class="n">_</span><span class="p">(</span><span class="s2">&quot;Days in a Row&quot;</span><span class="p">),</span>
+            <span class="n">size_hint_y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">height</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span>
+            <span class="n">padding</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="p">)</span>
+
+        <span class="n">days_layout</span> <span class="o">=</span> <span class="n">MDBoxLayout</span><span class="p">(</span>
+            <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;horizontal&quot;</span><span class="p">,</span>
+            <span class="n">padding</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">15</span><span class="p">)</span>
+        <span class="p">)</span>
+
+        <span class="n">today</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">weekday</span><span class="p">()</span>
+        <span class="n">days</span> <span class="o">=</span> <span class="p">[</span><span class="n">calendar</span><span class="o">.</span><span class="n">day_name</span><span class="p">[</span><span class="n">today</span> <span class="o">-</span> <span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)]</span>
+
+        <span class="k">for</span> <span class="n">day</span> <span class="ow">in</span> <span class="n">days</span><span class="p">:</span>
+            <span class="n">days_layout</span><span class="o">.</span><span class="n">add_widget</span><span class="p">(</span>
+                <span class="n">LabelUnderIconWidget</span><span class="p">(</span>
+                    <span class="n">icon</span><span class="o">=</span><span class="s2">&quot;check-circle-outline&quot;</span><span class="p">,</span>
+                    <span class="n">text</span><span class="o">=</span><span class="n">day</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+
+        <span class="n">today_widget</span> <span class="o">=</span> <span class="n">LabelUnderIconWidget</span><span class="p">(</span>
+            <span class="n">icon</span><span class="o">=</span><span class="s2">&quot;checkbox-blank-circle-outline&quot;</span><span class="p">,</span>
+            <span class="n">text</span><span class="o">=</span><span class="n">calendar</span><span class="o">.</span><span class="n">day_name</span><span class="p">[</span><span class="n">today</span><span class="p">][:</span><span class="mi">3</span><span class="p">],</span>
+            <span class="n">new_icon_on_action</span><span class="o">=</span><span class="s2">&quot;check-circle-outline&quot;</span>
+        <span class="p">)</span>
+
+        <span class="n">days_layout</span><span class="o">.</span><span class="n">add_widget</span><span class="p">(</span><span class="n">today_widget</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_widget</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_widget</span><span class="p">(</span><span class="n">days_layout</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="RateHabit"><a class="viewcode-back" href="../index.html#custom_widgets.RateHabit">[docs]</a><span class="k">class</span> <span class="nc">RateHabit</span><span class="p">(</span><span class="n">CustomCard</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    **RateHabit**</span>
+
+<span class="sd">    Card to rate your habit today.</span>
+
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">        **RateHabit.__init__**</span>
+
+<span class="sd">        Init this card.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Тут должен оцениваться сегодняшний habit&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Chart"><a class="viewcode-back" href="../index.html#custom_widgets.Chart">[docs]</a><span class="k">class</span> <span class="nc">Chart</span><span class="p">(</span><span class="n">CustomCard</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    **Chart**</span>
+
+<span class="sd">    MatPlot of habbit.</span>
+
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">        **Chart.__init__**</span>
+
+<span class="sd">        Init this card.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Тут должен рисоваться график чего-то&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Achievements"><a class="viewcode-back" href="../index.html#custom_widgets.Achievements">[docs]</a><span class="k">class</span> <span class="nc">Achievements</span><span class="p">(</span><span class="n">CustomCard</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    **Achievements**</span>
+
+<span class="sd">    Card with achievements.</span>
+
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">        **Achievements.__init__**</span>
+
+<span class="sd">        Init this card.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Можно ачивки сделать, и их здесь выводить&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Count"><a class="viewcode-back" href="../index.html#custom_widgets.Count">[docs]</a><span class="k">class</span> <span class="nc">Count</span><span class="p">(</span><span class="n">CustomCard</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    **Count**</span>
+
+<span class="sd">    Count statistics.</span>
+
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">        **Count.__init__**</span>
+
+<span class="sd">        Init this card.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Здесь просто выводится статистика &quot;</span> <span class="o">+</span> \
+            <span class="s2">&quot;по каждой оценке: сколько раз оценка 5, ...&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Calendar"><a class="viewcode-back" href="../index.html#custom_widgets.Calendar">[docs]</a><span class="k">class</span> <span class="nc">Calendar</span><span class="p">(</span><span class="n">CustomCard</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    **Calendar**</span>
+
+<span class="sd">    Simply Calendar.</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">        **Calendar.__init__**</span>
+
+<span class="sd">        Init this card.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Просто каледнарь с отметками о днях&quot;</span><span class="p">)</span></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">}{avau</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2022, SuccsessContent.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.5.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>
