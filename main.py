@@ -5,6 +5,7 @@ from kivy.storage.dictstore import DictStore
 from kivy.uix.screenmanager import ScreenManager
 from kivymd.app import MDApp
 
+from widgets.custom_widgets import CustomCard
 from widgets.mood_screen import MoodScreen
 from widgets.mood_rating import MoodRating
 from widgets.greeting_card import GreetingCard
@@ -72,7 +73,7 @@ class MainApp(MDApp):
     @staticmethod
     def init_widgets():
         """Load kv files for each widget."""
-        for widget in [MoodScreen, MoodRating, GreetingCard]:
+        for widget in [MoodScreen, MoodRating, GreetingCard, CustomCard]:
             Builder.load_string(widget.get_descritpion())
 
     def callback(self, event: str, addtional_info: dict = None):

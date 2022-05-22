@@ -2,6 +2,7 @@
 
 from datetime import datetime
 import calendar
+import pkgutil
 
 from kivymd.uix.card import MDCard
 from kivymd.uix.button import MDIconButton
@@ -18,6 +19,12 @@ class CustomCard(MDCard, RoundedRectangularElevationBehavior):
         self.radius = [20]
         self.size_hint_y = None
         self.size_hint_x = 0.8
+
+    @staticmethod
+    def get_descritpion() -> str:
+        """Return kv description content."""
+        return pkgutil.get_data(__name__, "description.kv").decode("utf-8")
+
 
 class LabelUnderIconWidget(MDBoxLayout):
     """Widget to paste IconButton and Label vertically."""
@@ -140,6 +147,16 @@ class DaysInRowCard(CustomCard):
 
         self.add_widget(title)
         self.add_widget(days_layout)
+
+
+class StarButton(MDIconButton):
+    """Button with star icon, should be combined in one container without other elements."""
+
+    def handle_click(self):
+        """Handle click on button, change state of other buttons in this container."""
+        for widget in self.parent.children:
+            widget.icon = "star-outline" if widget.value > self.value else "star"
+
 
 class RateHabit(CustomCard):
     """Card to rate your habit today."""
