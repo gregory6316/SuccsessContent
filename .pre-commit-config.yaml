@@ -4,6 +4,7 @@ repos:
     hooks:
     -   id: check-yaml
     -   id: end-of-file-fixer
+        exclude: '\.pylintrc'
     -   id: trailing-whitespace
 -   repo: local
     hooks:
