@@ -1,14 +1,17 @@
 """Module with custom cards."""
-
-from datetime import datetime
+from kivy.garden.matplotlib.backend_kivyagg import FigureCanvasKivyAgg
+import matplotlib.pyplot as plt
+from datetime import datetime, timedelta
 import calendar
 import pkgutil
-
+from kivy.storage.dictstore import DictStore
 from kivymd.uix.card import MDCard
 from kivymd.uix.button import MDIconButton
 from kivymd.uix.label import MDLabel
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.behaviors import RoundedRectangularElevationBehavior
+import numpy as np
+
 
 class CustomCard(MDCard, RoundedRectangularElevationBehavior):
     """Base class for scrollable cards in screens."""
@@ -78,7 +81,7 @@ class CurrentDayCard(CustomCard):
         """
         super().__init__(**kwargs)
 
-        self.height = 60
+        self.height = 80
 
         today = datetime.now()
         self.day = today.day
@@ -113,6 +116,7 @@ class DaysInRowCard(CustomCard):
         super().__init__(**kwargs)
 
         self.orientation = "vertical"
+        self.height = 120
 
         title = MDLabel(
             text="Days in a Row",
@@ -156,6 +160,19 @@ class StarButton(MDIconButton):
         """Handle click on button, change state of other buttons in this container."""
         for widget in self.parent.children:
             widget.icon = "star-outline" if widget.value > self.value else "star"
+        storage = DictStore("storage.dict")
+        if not storage.exists("init"):
+            # init storage
+            storage.put("init", launch_time=0)
+            storage.put("mood_history", init=True)
+        else:
+            init = storage.get("init")
+            init["launch_time"] += 1
+            storage.put("init", **init)
+        mood_history = storage.get("mood_history")
+        mood_history[datetime.now().strftime("%d, %B")] = self.value
+        storage.put("mood_history", **mood_history)
+        self.parent.parent.parent.parent.parent.parent.chart.update()
 
 
 class RateHabit(CustomCard):
@@ -164,15 +181,57 @@ class RateHabit(CustomCard):
     def __init__(self, **kwargs):
         """Init card."""
         super().__init__(**kwargs)
+        self.height = 120
         print("Тут должен оцениваться сегодняшний habit")
+
+
 
 class Chart(CustomCard):
     """MatPlot of habbit."""
 
     def __init__(self, **kwargs):
-        """Init card."""
         super().__init__(**kwargs)
-        print("Тут должен рисоваться график чего-то")
+        """Init card."""
+        self.widget = None
+        self.update()
+
+    def update(self):
+        """Update card."""
+        today = datetime.now()
+        months = [(today - timedelta(30*i)).strftime('%B') for i in range(5, -1, -1)]
+        days = [str(i) if i > 9 else '0' + str(i) for i in range(1, 32)]
+        storage = DictStore("storage.dict")
+        mood_history = storage.get("mood_history")
+        mood = []
+        for i in months:
+            m = []
+            for j in days:
+                if str(j) + ', ' + str(i) in mood_history.keys():
+                    m.append(mood_history[str(j) + ', ' + str(i)])
+                else:
+                    m.append(0)
+            mood.append(m)
+        mood = np.array(mood)
+
+        fig, ax = plt.subplots()
+        im = ax.imshow(mood)
+        ax.set_xticks(np.arange(len(days)), labels=days)
+        ax.set_yticks(np.arange(len(months)), labels=months)
+
+        plt.setp(ax.get_xticklabels(), rotation=45, ha="right",
+         rotation_mode="anchor")
+
+        for i in range(len(months)):
+            for j in range(len(days)):
+                text = ax.text(j, i, mood[i, j],
+                       ha="center", va="center", color="w")
+
+        ax.set_title("Mood rating over 6 month")
+        fig.tight_layout()
+        if self.widget:
+            self.remove_widget(self.widget)
+        self.widget = FigureCanvasKivyAgg(plt.gcf())
+        self.add_widget(self.widget)
 
 class Achievements(CustomCard):
     """Card with achievements."""
