@@ -4,6 +4,7 @@ import pkgutil
 #import matplotlib.pyplot as plt
 #import numpy as np
 
+from kivymd.uix.textfield import MDTextField
 from kivymd.uix.card import MDCard
 from kivymd.uix.button import MDIconButton
 from kivymd.uix.label import MDLabel
@@ -149,6 +150,11 @@ class StarButton(MDIconButton):
         """Init StarButton."""
         super().__init__(**kwargs)
         self.value = value
+        # scale = 2
+        # self.children[0].font_size *= scale
+        # self.height *= scale
+        # self.width *= scale
+        # self.children[0].size = self.size
 
     def handle_click(self):
         """Handle click on button, change state of other buttons in this container."""
@@ -159,7 +165,7 @@ class StarButton(MDIconButton):
         key = self.parent.parent.key
         storage.put(key, date.today(), self.value, "")
 
-        #self.parent.parent.parent.parent.parent.parent.chart.update()
+        #self.parent.parent.parent.parent.parent.chart.update()
 
 
 class RateHabit(CustomCard):
@@ -172,6 +178,14 @@ class RateHabit(CustomCard):
         self.key = key
         self.height = 120
 
+
+class CommentTextField(MDTextField):
+    """Text field for comment about day."""
+
+    def __init__(self, **kwargs):
+        """Init comment text field."""
+        super().__init__(**kwargs)
+        self.hint_text = "Дополнительный комментарий"
 
 
 class Chart(CustomCard):
@@ -221,12 +235,14 @@ class Chart(CustomCard):
 #        self.widget = FigureCanvasKivyAgg(plt.gcf())
 #        self.add_widget(self.widget)
 
+
 class Achievements(CustomCard):
     """Card with achievements."""
 
     def __init__(self, **kwargs):
         """Init card."""
         super().__init__(**kwargs)
+
 
 class Count(CustomCard):
     """Count statistics."""
