@@ -9,4 +9,5 @@ from .description import (
     Count,
     Calendar,
     RateHabit,
+    StarButtonsContainer
 )
