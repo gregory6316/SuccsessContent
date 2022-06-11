@@ -158,11 +158,10 @@ class DaysInRowCard(CustomCard):
 class StarButtonsContainer(MDBoxLayout):
     """Container with several star buttons."""
 
-    stars_count = 5
-
-    def __init__(self, **kwargs):
+    def __init__(self, stars_count=5, **kwargs):
         """Init container and create star buttons."""
         super().__init__(**kwargs)
+        self.stars_count = stars_count
 
         for i in range(int(self.stars_count)):
             self.add_widget(StarButton(value=i+1))
