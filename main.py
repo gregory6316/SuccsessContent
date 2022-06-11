@@ -1,7 +1,6 @@
 """File with application entry point and intercomponents communication controller."""
 
 from kivy.lang import Builder
-from kivy.storage.dictstore import DictStore
 from kivy.uix.screenmanager import ScreenManager
 from kivymd.app import MDApp
 
@@ -9,6 +8,8 @@ from widgets.custom_widgets import CustomCard
 from widgets.mood_screen import MoodScreen
 from widgets.mood_rating import MoodRating
 from widgets.greeting_card import GreetingCard
+
+from custom_storage import Storage
 
 
 class HelloScreenManager(ScreenManager):
@@ -44,10 +45,8 @@ class MainApp(MDApp):
         """Init this class."""
         super().__init__(**kwargs)
 
-        self.storage = DictStore("storage.dict")
-        self.inited = False
+        self.storage = Storage("storage.dict")
 
-        self.init_storage()
         self.init_widgets()
 
         self.theme_cls.primary_palette = "Green"  # "Purple", "Red"
@@ -55,20 +54,21 @@ class MainApp(MDApp):
     def on_start(self):
         """Run after the application was built, but not started yet."""
         super().on_start()
-        if self.storage.get("init")["launch_time"] == 0:
+        if not self.storage.inited():
+            self.storage.set_inited()
             greeting_card = GreetingCard()
             greeting_card.open()
 
-    def init_storage(self):
-        """Fill storage for the first run."""
-        if not self.storage.exists("init"):
-            # init storage
-            self.storage.put("init", launch_time=0)
-            self.storage.put("mood_history", values=[])
-        else:
-            init = self.storage.get("init")
-            init["launch_time"] += 1
-            self.storage.put("init", **init)
+    #def init_storage(self):
+    #    """Fill storage for the first run."""
+    #    if not self.storage.exists("init"):
+    #        # init storage
+    #        self.storage.put("init", launch_time=0)
+    #        self.storage.put("mood_history", values=[])
+    #    else:
+    #        init = self.storage.get("init")
+    #        init["launch_time"] += 1
+    #        self.storage.put("init", **init)
 
     @staticmethod
     def init_widgets():
