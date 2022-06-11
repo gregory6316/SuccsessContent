@@ -2,39 +2,20 @@
 
 Usage Example:
 >>> from custom_storage import Storage
+>>> from datetime import date
 >>>
 >>> name = "tmp.dict"
 >>> storage = Storage(name)
 >>>
+>>> day = date.today()
 >>> todays_rating = 5
->>> storage.put_history('mood', todays_rating)
+>>> message = "Great Day"
+>>> storage.put('mood', day, todays_rating, message)
 >>>
->>> storage.get_history('mood')
-[5]
->>> new_day_rating = 4
->>> storage.put_history('mood', new_day_rating)
->>> storage.get_history('mood')
-[5, 4]
->>>
->>> storage.get_days_passed('mood')
-0
->>> storage.update_last_day('mood')
->>> # After several days
->>> storage.get_days_passed('mood')
+>>> storage.get_message('mood', day)
+Great Day
+>>> storage.get_value('mood', day)
 5
->>> days_passed = storage.get_days_passed('mood')
->>> storage.append_zeros('mood', passed_days - 1)
->>> storage.get_history('mood')
-[5, 4, 0, 0, 0, 0]
-
-
-Tips:
-1. After putting new value to history (storage.put_history)
-   don't forget to update current day (storage.update_last_day)
-2. If you want to append zeros to history (storage.append_zeros)
-   with number of passed days (storage.get_days_passed)
-   subtract 1 from passed days, because "today" - "yesterday" = 1,
-   and there should not be additional 0.
 """
 from datetime import date
 from kivy.storage.dictstore import DictStore
@@ -59,95 +40,70 @@ class Storage:
         if not self.storage.exists("inited"):
             self.storage.put("inited", value=True)
 
-    def put_history(self, key, date_value):
-        """Append value to history list by key in storage.
+    def put(self, key, day, value, msg):
+        """Add day to history dict by key in storage.
 
         Args:
-        key: str - key containing history list and last day;
-        value - value to be appended to history;
+        key: str - key containing activity;
+        day: datetime.date;
+        value: int - value of todays activity (1-5);
+        msg: str - message of the day;
         """
-        history_list = self.get_history(key)
-        history_list.append(date_value)
-        self.storage.put(key, history=history_list)
+        history_dict = self.get(key)
+        history_dict[day] = {'value': value, 'msg': msg}
+        self.storage.put(key, history=history_dict)
 
-    def get_history(self, key):
-        """Return entire history list by key in storage.
+    def put_today(self, key, value, msg):
+        """Add current day to history dict by key in storage.
 
         Args:
-        key: str - key containing history list and last day;
+        key: str - key containing activity;
+        value: int - value of todays activity (1-5);
+        msg: str - message of the day;
+        """
+        day = date.today()
+        self.put(key, day, value, msg)
+
+    def get(self, key):
+        """Return entire history dict by key in storage.
+
+        Args:
+        key: str - key containing history dict;
 
         Returns:
-        list - history list if exists else None
+        dict - history dict if exists else None
         """
         if not self.storage.exists(key):
-            self.storage.put(key, history=[])
-        if "history" not in self.storage.get(key):
-            self.storage.put(key, history=[])
+            self.storage.put(key, history={})
+        elif "history" not in self.storage.get(key):
+            self.storage.put(key, history={})
 
         return self.storage.get(key).get("history")
 
-    def pop_from_history(self, key):
-        """Erase last value from history and return it.
+    def get_message(self, key, day):
+        """Return day's message.
 
         Args:
-        key: str - key containing history list and last day;
-        """
-        history = self.get_history(key)
-        if len(history) > 0:
-            elem = history.pop()
-            self.storage.store_sync()
-            return elem
-        return None
+        key: str - key containing history dict;
+        day: datetime.date;
 
-    def set_last_day(self, key, day):
-        """Set the last day stored by key to new day.
+        Returns:
+        str - day's message;
+        """
+        history_dict = self.get(key)
+        item = history_dict.get(day, {"value": None, "msg": ""})
+        return item["msg"]
+
+    def get_value(self, key, day):
+        """Return day's value.
 
         Args:
-        key: str - key where day and history are stored;
-        day: datetime.date - new day to be set;
+        key: str - key containing history dict;
+        day: datetime.date;
+
+        Returns:
+        int - day's value;
         """
-        self.storage.put(key, last_day=day)
-
-
-    def get_last_day(self, key):
-        """Get the last day stored by key to new day.
-
-        Args:
-        key: str - key where day and history are stored;
-        """
-        if not self.storage.exists(key):
-            self.storage.put(key, last_day=None)
-        return self.storage.get(key).get("last_day", None)
-
-    def update_last_day(self, key):
-        """Update last day stored in storage by key.
-
-        Args:
-        key: str - key containing value of last day and history list;
-        """
-        today = date.today()
-        self.set_last_day(key, today)
-
-    def get_days_passed(self, key):
-        """Return number of passed days from current day day stored by key.
-
-        Args:
-        key: str - key containing value of last day and history list;
-        """
-        today = date.today()
-        if not self.storage.exists(key):
-            self.storage.put(key, last_day=today)
-        last_day = self.storage.get(key).get('last_day', today)
-        if not last_day:
-            last_day = today
-        return (today-last_day).days
-
-    def append_zeros(self, key, num):
-        """Append zero values to history list by key.
-
-        Args:
-        key: str - key containing history list and last day;
-        num: int - number of zeros to be put in list;
-        """
-        for _ in range(num):
-            self.put_history(key, 0)
+        history_dict = self.get(key)
+        item = history_dict.get(day, {"value": None, "msg": ""})
+        return item["value"]

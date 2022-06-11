@@ -2,10 +2,12 @@
 
 import pkgutil
 
+from kivymd.app import MDApp
+from kivymd.uix.boxlayout import MDBoxLayout
+
 from kivy.uix.screenmanager import Screen
 from kivy.uix.scrollview import ScrollView
 
-from kivymd.uix.boxlayout import MDBoxLayout
 from widgets.custom_widgets import CurrentDayCard, DaysInRowCard, RateHabit, Chart
 
 
@@ -19,6 +21,8 @@ class MoodScreen(Screen):
         Inits cards.
         Inits greeting card if the first run.
         """
+        storage = MDApp.get_running_app().storage
+
         super().__init__(**kwargs)
 
         scrollview = ScrollView(
@@ -37,25 +41,19 @@ class MoodScreen(Screen):
         current_day_card = CurrentDayCard(
             icon='emoticon-outline',
             msg='Have a nice day!',
-            pos_hint={"center_x": 0.5},
-            height = 80
-        )
-
-        days_in_row_card = DaysInRowCard(
-            pos_hint={"center_x": 0.5}
+            height=80
         )
 
         cards_panel.add_widget(current_day_card)
-        cards_panel.add_widget(days_in_row_card)
-        cards_panel.add_widget(RateHabit(
-            pos_hint={"center_x": 0.5}
-        ))
-        self.chart = Chart(
-            pos_hint={"center_x": 0.5},
-            height = 400
-        )
+        cards_panel.add_widget(DaysInRowCard(storage, 'mood'))
+        cards_panel.add_widget(RateHabit(storage, 'mood'))
+        self.chart = Chart()
+# storage,
+# 'mood',
+# height = 400
+# )
         cards_panel.add_widget(self.chart)
-        
+
         scrollview.add_widget(cards_panel)
         self.add_widget(scrollview)
 
