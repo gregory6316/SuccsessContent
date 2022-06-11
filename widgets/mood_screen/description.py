@@ -6,7 +6,7 @@ from kivy.uix.screenmanager import Screen
 from kivy.uix.scrollview import ScrollView
 
 from kivymd.uix.boxlayout import MDBoxLayout
-from widgets.custom_widgets import CurrentDayCard, DaysInRowCard, RateHabit
+from widgets.custom_widgets import CurrentDayCard, DaysInRowCard, RateHabit, Chart
 
 
 class MoodScreen(Screen):
@@ -37,7 +37,8 @@ class MoodScreen(Screen):
         current_day_card = CurrentDayCard(
             icon='emoticon-outline',
             msg='Have a nice day!',
-            pos_hint={"center_x": 0.5}
+            pos_hint={"center_x": 0.5},
+            height = 80
         )
 
         days_in_row_card = DaysInRowCard(
@@ -49,7 +50,12 @@ class MoodScreen(Screen):
         cards_panel.add_widget(RateHabit(
             pos_hint={"center_x": 0.5}
         ))
-
+        self.chart = Chart(
+            pos_hint={"center_x": 0.5},
+            height = 400
+        )
+        cards_panel.add_widget(self.chart)
+        
         scrollview.add_widget(cards_panel)
         self.add_widget(scrollview)
 
