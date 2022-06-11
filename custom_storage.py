@@ -75,7 +75,7 @@ class Storage:
         """
         if not self.storage.exists(key):
             self.storage.put(key, history={})
-        if "history" not in self.storage.get(key):
+        elif "history" not in self.storage.get(key):
             self.storage.put(key, history={})
 
         return self.storage.get(key).get("history")
