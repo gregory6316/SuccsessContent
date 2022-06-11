@@ -59,22 +59,16 @@ class Storage:
         if not self.storage.exists("inited"):
             self.storage.put("inited", value=True)
 
-    def put_history(self, key, value):
+    def put_history(self, key, date_value):
         """Append value to history list by key in storage.
 
         Args:
         key: str - key containing history list and last day;
         value - value to be appended to history;
         """
-        history = self.get_history(key)
-        print('Got history:', history)
-        history.append(value)
-        print('Elem appended:', history)
-        self.storage.put(key=history)
-        #self.storage.store_sync()
-        #print('Synced')
-        print('New history:')
-        print(self.storage.get(key).get("history"))
+        history_list = self.get_history(key)
+        history_list.append(date_value)
+        self.storage.put(key, history=history_list)
 
     def get_history(self, key):
         """Return entire history list by key in storage.
@@ -88,8 +82,8 @@ class Storage:
         if not self.storage.exists(key):
             self.storage.put(key, history=[])
         if "history" not in self.storage.get(key):
-            self.storage.get(key)['history'] = []
-            self.storage.store_sync()
+            self.storage.put(key, history=[])
+
         return self.storage.get(key).get("history")
 
     def pop_from_history(self, key):
@@ -112,11 +106,7 @@ class Storage:
         key: str - key where day and history are stored;
         day: datetime.date - new day to be set;
         """
-        if not self.storage.exists(key):
-            self.storage.put(key, last_day=day)
-        else:
-            self.storage.get(key)["last_day"] = day
-            self.storage.store_sync()
+        self.storage.put(key, last_day=day)
 
 
     def get_last_day(self, key):
