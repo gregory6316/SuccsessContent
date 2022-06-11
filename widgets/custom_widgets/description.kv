@@ -1,16 +1,27 @@
+<CommentTextField>:
+    multiline: True
+
 <StarButton>:
     icon: "star"
     on_release: self.handle_click()
+    user_font_size: "60sp"
+
+<StarButtonsContainer>:
+    height: 80
+    size_hint_y: None
+    orientation: "horizontal"
 
 <RateHabit>:
+    id: box_bottom
+    padding: "20dp", 0, 0, 0
+    orientation: "vertical"
+    size: self.minimum_size
+    MDLabel:
+        height: 40
+        size_hint_y: None
+        text: "Rate this day mood"
+        theme_text_color: "Primary"
 
-    MDBoxLayout:
-        id: box_bottom
-        padding: "20dp", 0, 0, 0
-        orientation: "vertical"
-
-        MDLabel:
-            text: "Rate this day mood"
-            theme_text_color: "Primary"
-
-        StarButtonsContainer:
+    StarButtonsContainer:
+    CommentTextField:
+        padding: 0, "20dp", 0, 0

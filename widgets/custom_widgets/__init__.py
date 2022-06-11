@@ -9,5 +9,6 @@ from .description import (
     Count,
     Calendar,
     RateHabit,
-    StarButtonsContainer
+    StarButtonsContainer,
+    CommentTextField,
 )
