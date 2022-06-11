@@ -1,16 +1,18 @@
 """Module with custom cards."""
-from kivy.garden.matplotlib.backend_kivyagg import FigureCanvasKivyAgg
-import matplotlib.pyplot as plt
-from datetime import datetime, timedelta
 import calendar
+from datetime import datetime, timedelta
 import pkgutil
+import matplotlib.pyplot as plt
+import numpy as np
+
 from kivy.storage.dictstore import DictStore
 from kivymd.uix.card import MDCard
 from kivymd.uix.button import MDIconButton
 from kivymd.uix.label import MDLabel
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.behaviors import RoundedRectangularElevationBehavior
-import numpy as np
+
+from garden_matplotlib.backend_kivyagg import FigureCanvasKivyAgg
 
 
 class CustomCard(MDCard, RoundedRectangularElevationBehavior):
@@ -153,8 +155,25 @@ class DaysInRowCard(CustomCard):
         self.add_widget(days_layout)
 
 
+class StarButtonsContainer(MDBoxLayout):
+    """Container with several star buttons."""
+
+    def __init__(self, stars_count=5, **kwargs):
+        """Init container and create star buttons."""
+        super().__init__(**kwargs)
+        self.stars_count = stars_count
+
+        for i in range(int(self.stars_count)):
+            self.add_widget(StarButton(value=i+1))
+
+
 class StarButton(MDIconButton):
     """Button with star icon, should be combined in one container without other elements."""
+
+    def __init__(self, value, **kwargs):
+        """Init StarButton."""
+        super().__init__(**kwargs)
+        self.value = value
 
     def handle_click(self):
         """Handle click on button, change state of other buttons in this container."""
@@ -190,13 +209,13 @@ class Chart(CustomCard):
     """MatPlot of habbit."""
 
     def __init__(self, **kwargs):
+        """Init chart."""
         super().__init__(**kwargs)
-        """Init card."""
         self.widget = None
         self.update()
 
     def update(self):
-        """Update card."""
+        """Update chart."""
         today = datetime.now()
         months = [(today - timedelta(30*i)).strftime('%B') for i in range(5, -1, -1)]
         days = [str(i) if i > 9 else '0' + str(i) for i in range(1, 32)]
@@ -204,29 +223,29 @@ class Chart(CustomCard):
         mood_history = storage.get("mood_history")
         mood = []
         for i in months:
-            m = []
+            month = []
             for j in days:
                 if str(j) + ', ' + str(i) in mood_history.keys():
-                    m.append(mood_history[str(j) + ', ' + str(i)])
+                    month.append(mood_history[str(j) + ', ' + str(i)])
                 else:
-                    m.append(0)
-            mood.append(m)
+                    month.append(0)
+            mood.append(month)
         mood = np.array(mood)
 
-        fig, ax = plt.subplots()
-        im = ax.imshow(mood)
-        ax.set_xticks(np.arange(len(days)), labels=days)
-        ax.set_yticks(np.arange(len(months)), labels=months)
+        fig, axis = plt.subplots()
+        axis.imshow(mood)
+        axis.set_xticks(np.arange(len(days)), labels=days)
+        axis.set_yticks(np.arange(len(months)), labels=months)
 
-        plt.setp(ax.get_xticklabels(), rotation=45, ha="right",
+        plt.setp(axis.get_xticklabels(), rotation=45, ha="right",
          rotation_mode="anchor")
 
         for i in range(len(months)):
             for j in range(len(days)):
-                text = ax.text(j, i, mood[i, j],
+                axis.text(j, i, mood[i, j],
                        ha="center", va="center", color="w")
 
-        ax.set_title("Mood rating over 6 month")
+        axis.set_title("Mood rating over 6 month")
         fig.tight_layout()
         if self.widget:
             self.remove_widget(self.widget)
