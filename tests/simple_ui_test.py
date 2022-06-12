@@ -26,7 +26,7 @@ def test_mood_screen():
     widget = MoodScreen()
     assert widget.children[0].children[0].children[1].children[0].hint_text == 'Commentary'
     assert widget.children[0].children[0].children[2].children[1].text == 'Days in a Row'
-    
+
 
 def test_greeting_card():
     """Test Greeting card UI."""
@@ -37,5 +37,3 @@ def test_greeting_card():
     assert widget.children[1].text == 'Rate us'
     assert widget.children[2].text == 'Start!'
     assert widget.children[3].text == 'Welcome to\n[b]}{avau![/b]'
-
-
