@@ -1,7 +1,7 @@
 """Tests for UI."""
 from kivy.lang import Builder
 from main import MainApp
-from widgets.mood_screen import MoodScreen
+from widgets.mood_screen import RateScreen
 from widgets.mood_rating import MoodRating
 
 
@@ -9,7 +9,7 @@ def test_get_description():
     """Test existence of of description.kv file."""
     for kv_path, module in [
         ("../widgets/mood_rating/description.kv", MoodRating),
-        ("../widgets/mood_screen/description.kv", MoodScreen)
+        ("../widgets/mood_screen/description.kv", RateScreen)
     ]:
         with open(kv_path, encoding="utf-8") as kv_file:
             kv_content = kv_file.read()
@@ -30,10 +30,10 @@ def test_mood_rating():
 
 
 def test_mood_screen():
-    """Test MoodScreen UI."""
+    """Test RateScreen UI."""
     MainApp()
-    Builder.load_string(MoodScreen.get_descritpion())
-    widget = MoodScreen()
+    Builder.load_string(RateScreen.get_descritpion())
+    widget = RateScreen()
     assert widget.children[0].children[0].text == '[u][size=24][b]Powered by[/b][/size][/u]\nSuccessContent'
     assert widget.children[0].children[1].text == 'Rate us'
     assert widget.children[0].children[2].text == 'Start!'
