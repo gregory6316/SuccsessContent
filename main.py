@@ -12,7 +12,6 @@ from kivymd.uix.list import MDList, OneLineIconListItem, IconLeftWidget
 
 from widgets.custom_widgets import CustomCard
 from widgets.mood_screen import RateScreen
-from widgets.mood_rating import MoodRating
 from widgets.greeting_card import GreetingCard
 
 from custom_storage import Storage
@@ -100,7 +99,7 @@ class MainApp(MDApp):
     @staticmethod
     def init_widgets():
         """Load kv files for each widget."""
-        for widget in [RateScreen, MoodRating, GreetingCard, CustomCard]:
+        for widget in [RateScreen, GreetingCard, CustomCard]:
             Builder.load_string(widget.get_descritpion())
 
     def callback(self, event: str, addtional_info: dict = None):
@@ -111,8 +110,6 @@ class MainApp(MDApp):
         if widget == "HelloScreen":
             if event_type == "start":
                 self.root.ids.screen_manager.current = "tipscreen2"
-        elif widget == "MoodRating":
-            pass
 
 
 def main():
