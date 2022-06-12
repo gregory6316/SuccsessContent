@@ -1,8 +1,9 @@
 """Module with custom cards."""
 from datetime import datetime, date, timedelta
+from calendar import monthrange
 import pkgutil
-#import matplotlib.pyplot as plt
-#import numpy as np
+import matplotlib.pyplot as plt
+import numpy as np
 
 from kivymd.uix.textfield import MDTextField
 from kivymd.uix.card import MDCard
@@ -11,7 +12,7 @@ from kivymd.uix.label import MDLabel
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.behaviors import RoundedRectangularElevationBehavior
 
-#from garden_matplotlib.backend_kivyagg import FigureCanvasKivyAgg
+from garden_matplotlib.backend_kivyagg import FigureCanvasKivyAgg
 
 class CustomCard(MDCard, RoundedRectangularElevationBehavior):
     """Base class for scrollable cards in screens."""
@@ -67,6 +68,7 @@ class CurrentDayCard(CustomCard):
         super().__init__(**kwargs)
 
         self.height = 80
+        self.need_update = False
 
         today = datetime.now()
         self.day = today.day
@@ -97,8 +99,14 @@ class DaysInRowCard(CustomCard):
         """Init card."""
         super().__init__(**kwargs)
 
+        self.widget = None
+        self.need_update = True
+
         self.orientation = "vertical"
         self.height = 120
+
+        self.storage = storage
+        self.key = key
 
         title = MDLabel(
             text="Days in a Row",
@@ -107,6 +115,11 @@ class DaysInRowCard(CustomCard):
             padding=(15, 0)
         )
 
+        self.add_widget(title)
+        self.update()
+
+    def update(self):
+        """Update the current state of widget."""
         days_layout = MDBoxLayout(
             orientation="horizontal",
             padding=(0, 0, 0, 15)
@@ -115,7 +128,7 @@ class DaysInRowCard(CustomCard):
         today = date.today()
         days = [today - timedelta(days=i) for i in range(6, -1, -1)]
 
-        history_dict = storage.get(key)
+        history_dict = self.storage.get(self.key)
         for day in days:
             icon = "circle-outline"
             if day in history_dict.keys():
@@ -127,8 +140,10 @@ class DaysInRowCard(CustomCard):
                 )
             )
 
-        self.add_widget(title)
-        self.add_widget(days_layout)
+        if self.widget:
+            self.remove_widget(self.widget)
+        self.widget = days_layout
+        self.add_widget(self.widget)
 
 
 class StarButtonsContainer(MDBoxLayout):
@@ -165,7 +180,7 @@ class StarButton(MDIconButton):
         key = self.parent.parent.key
         storage.put(key, date.today(), self.value, "")
 
-        #self.parent.parent.parent.parent.parent.chart.update()
+        self.parent.parent.parent.parent.parent.update()
 
 
 class RateHabit(CustomCard):
@@ -177,6 +192,7 @@ class RateHabit(CustomCard):
         self.storage = storage
         self.key = key
         self.height = 120
+        self.need_update = False
 
 
 class CommentTextField(MDTextField):
@@ -190,50 +206,67 @@ class CommentTextField(MDTextField):
 
 class Chart(CustomCard):
     """MatPlot of habbit."""
-#
-#    def __init__(self, storage, key, **kwargs):
-#        """Init chart."""
-#        super().__init__(**kwargs)
-#        self.widget = None
-#        self.update()
-#
-#    def update(self):
-#        """Update chart."""
-#        today = datetime.now()
-#        months = [(today - timedelta(30*i)).strftime('%B') for i in range(5, -1, -1)]
-#        days = [str(i) if i > 9 else '0' + str(i) for i in range(1, 32)]
-#
-#        mood_history = storage.get(key)
-#        mood = []
-#        for i in months:
-#            month = []
-#            for j in days:
-#                if str(j) + ', ' + str(i) in mood_history.keys():
-#                    month.append(mood_history[str(j) + ', ' + str(i)])
-#                else:
-#                    month.append(0)
-#            mood.append(month)
-#        mood = np.array(mood)
-#
-#        fig, axis = plt.subplots()
-#        axis.imshow(mood)
-#        axis.set_xticks(np.arange(len(days)), labels=days)
-#        axis.set_yticks(np.arange(len(months)), labels=months)
-#
-#        plt.setp(axis.get_xticklabels(), rotation=45, ha="right",
-#         rotation_mode="anchor")
-#
-#        for i in range(len(months)):
-#            for j in range(len(days)):
-#                axis.text(j, i, mood[i, j],
-#                       ha="center", va="center", color="w")
-#
-#        axis.set_title("Mood rating over 6 month")
-#        fig.tight_layout()
-#        if self.widget:
-#            self.remove_widget(self.widget)
-#        self.widget = FigureCanvasKivyAgg(plt.gcf())
-#        self.add_widget(self.widget)
+
+    def __init__(self, storage, key, **kwargs):
+        """Init chart."""
+        super().__init__(**kwargs)
+        self.widget = None
+        self.need_update = True
+        self.padding = (10, 0, 10, 0)
+        self.storage = storage
+        self.key = key
+
+        self.update()
+
+    def update(self):
+        """Update chart."""
+        history = self.storage.get(self.key)
+
+        today = date.today()
+        #months = [(today - timedelta(days=30*i)).strftime("%b") for i in range(5, -1, -1)]
+
+        first_month = (today.month + 7) % 12
+        if first_month == 0:
+            first_month = 12
+        first_year = today.year-1 if first_month > today.month else today.year
+        first_day = date(day=1, month=first_month, year=first_year)
+
+        values = []
+        for _ in range(6): # 6 months
+            month_values = []
+            for day in range(1, 32):
+                if day < monthrange(first_day.year, first_day.month)[1]:
+                    if first_day in history.keys():
+                        value = history[first_day]['value']
+                    else:
+                        value = 0
+                    first_day += timedelta(days=1)
+                else:
+                    value = 0
+                month_values.append(value)
+            values.append(month_values)
+        values = np.array(values)
+
+        fig, axis = plt.subplots()
+        axis.imshow(values)
+        axis.set_xticks(np.arange(31), labels=list(range(1, 32)))
+        axis.set_yticks(np.arange(6), labels=
+                        [(today - timedelta(days=30*i)).strftime("%b") for i in range(5, -1, -1)])
+
+        plt.setp(axis.get_xticklabels(), rotation=45, ha="right",
+                 rotation_mode="anchor")
+
+        for i in range(6):
+            for j in range(31):
+                axis.text(j, i, values[i, j],
+                          ha="center", va="center", color="w")
+
+        axis.set_title("Mood rating over 6 month")
+        fig.tight_layout()
+        if self.widget:
+            self.remove_widget(self.widget)
+        self.widget = FigureCanvasKivyAgg(plt.gcf())
+        self.add_widget(self.widget)
 
 
 class Achievements(CustomCard):
@@ -252,8 +285,9 @@ class Count(CustomCard):
         super().__init__(**kwargs)
 
 class Calendar(CustomCard):
-    """Simply Calendar."""
+    """Simple Calendar."""
 
     def __init__(self, **kwargs):
         """Init card."""
         super().__init__(**kwargs)
+        self.need_update = True

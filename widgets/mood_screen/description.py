@@ -21,7 +21,7 @@ class MoodScreen(Screen):
         Inits cards.
         Inits greeting card if the first run.
         """
-        storage = MDApp.get_running_app().storage
+        self.storage = MDApp.get_running_app().storage
 
         super().__init__(**kwargs)
 
@@ -45,18 +45,24 @@ class MoodScreen(Screen):
         )
 
         cards_panel.add_widget(current_day_card)
-        cards_panel.add_widget(DaysInRowCard(storage, 'mood'))
-        cards_panel.add_widget(RateHabit(storage, 'mood'))
-        self.chart = Chart()
-# storage,
-# 'mood',
-# height = 400
-# )
+        cards_panel.add_widget(DaysInRowCard(self.storage, 'mood'))
+        cards_panel.add_widget(RateHabit(self.storage, 'mood'))
+        self.chart = Chart(
+            self.storage,
+            'mood',
+            height=200
+        )
         cards_panel.add_widget(self.chart)
 
         scrollview.add_widget(cards_panel)
         self.add_widget(scrollview)
 
+    def update(self):
+        """Update the cards statuses."""
+        cards = self.children[0].children[0].children
+        for card in cards:
+            if card.need_update:
+                card.update()
 
     @staticmethod
     def get_descritpion() -> str:
