@@ -185,7 +185,7 @@ class CommentTextField(MDTextField):
     def __init__(self, **kwargs):
         """Init comment text field."""
         super().__init__(**kwargs)
-        self.hint_text = "Дополнительный комментарий"
+        self.hint_text = "Commentary"
 
 
 class Chart(CustomCard):
