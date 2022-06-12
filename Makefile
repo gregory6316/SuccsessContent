@@ -19,7 +19,7 @@ test:
 	pytest tests
 
 clean_venv:
-	rm -rf venv
+	rm -rf success_venv
 
 deploy:
 	echo 'buildozer is dead :('
