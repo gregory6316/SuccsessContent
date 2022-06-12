@@ -1,4 +1,4 @@
-VENV_NAME?=venv
+VENV_NAME?=success_venv
 PYTHON=${VENV_NAME}/bin/python
 
 prepare_venv: $(VENV_NAME)/bin/activate
@@ -13,11 +13,10 @@ run: prepare_venv
 	${PYTHON} main.py
 
 build_docs: prepare_venv
-	echo 'docs :)' 
+	echo 'docs :)'
 
 test:
-	pytest tests    
-
+	pytest tests
 
 clean_venv:
 	rm -rf venv
