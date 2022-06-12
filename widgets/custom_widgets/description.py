@@ -150,11 +150,7 @@ class StarButton(MDIconButton):
         """Init StarButton."""
         super().__init__(**kwargs)
         self.value = value
-        # scale = 2
-        # self.children[0].font_size *= scale
-        # self.height *= scale
-        # self.width *= scale
-        # self.children[0].size = self.size
+        self.icon = "star-outline"
 
     def handle_click(self):
         """Handle click on button, change state of other buttons in this container."""
