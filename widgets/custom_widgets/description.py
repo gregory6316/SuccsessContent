@@ -180,8 +180,6 @@ class StarButton(MDIconButton):
 
         self.parent.value = self.value
 
-        #self.parent.parent.parent.parent.parent.update()
-
 
 class RateHabit(CustomCard):
     """Card to rate your habit today."""
@@ -202,6 +200,9 @@ class RateHabit(CustomCard):
         storage = self.storage
         key = self.key
         storage.put_today(key, value, message)
+
+        self.parent.parent.parent.update()
+
 
 class CommentTextField(MDTextField):
     """Text field for comment about day."""

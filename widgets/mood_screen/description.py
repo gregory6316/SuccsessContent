@@ -8,7 +8,7 @@ from kivymd.uix.boxlayout import MDBoxLayout
 from kivy.uix.screenmanager import Screen
 from kivy.uix.scrollview import ScrollView
 
-from widgets.custom_widgets import CurrentDayCard, DaysInRowCard, RateHabit, Calendar#, Chart
+from widgets.custom_widgets import CurrentDayCard, DaysInRowCard, RateHabit, Calendar, Chart
 
 
 class RateScreen(Screen):
@@ -48,12 +48,12 @@ class RateScreen(Screen):
 
         cards_panel.add_widget(DaysInRowCard(self.storage, self.name))
         cards_panel.add_widget(RateHabit(self.storage, self.name))
-        #self.chart = Chart()
-# storage,
-# self.name,
-# height = 400
-# )
-        #cards_panel.add_widget(self.chart)
+        self.chart = Chart(
+            self.storage,
+            self.name,
+            height=400
+        )
+        cards_panel.add_widget(self.chart)
         cards_panel.add_widget(Calendar(self.storage, self.name))
 
         scrollview.add_widget(cards_panel)
