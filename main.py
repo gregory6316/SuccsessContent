@@ -1,41 +1,67 @@
 """File with application entry point and intercomponents communication controller."""
 
+from functools import partial
+
 from kivy.lang import Builder
 from kivy.uix.screenmanager import ScreenManager
+from kivy.uix.scrollview import ScrollView
 from kivymd.app import MDApp
+from kivymd.uix.navigationdrawer import MDNavigationLayout, MDNavigationDrawer
+from kivymd.uix.boxlayout import MDBoxLayout
+from kivymd.uix.list import MDList, OneLineIconListItem, IconLeftWidget
 
 from widgets.custom_widgets import CustomCard
-from widgets.mood_screen import MoodScreen
-from widgets.mood_rating import MoodRating
+from widgets.mood_screen import RateScreen
 from widgets.greeting_card import GreetingCard
 
 from custom_storage import Storage
 
 
-class HelloScreenManager(ScreenManager):
-    """Screen Manager with action on first run of app."""
+class RateScreensManger(MDNavigationLayout):
+    """Main screen manager."""
 
     def __init__(self, **kwargs):
-        """Init this class."""
+        """Create screens and associated menu items."""
         super().__init__(**kwargs)
+        self.screens_icons = {
+            "Mood": "emoticon-outline",
+            "Sleep": "sleep",
+            "Food": "food-apple-outline",
+            "Activity": "arm-flex-outline",
+        }
 
-        mood_screen = MoodScreen()
+        self._screen_manager = ScreenManager()
+        self._navigation_drawer = MDNavigationDrawer()
+        menu_box = MDBoxLayout(
+            orientation="vertical",
+            padding="8dp",
+            spacing="8dp",
+        )
+        menu_scroll_view = ScrollView()
+        menu_list_items = MDList()
 
-        # sleep_screen = SleepScreen(
-        #    name = "sleep screen"
-        # )
+        for screen_name, icon in self.screens_icons.items():
+            list_item = OneLineIconListItem(
+                text=screen_name,
+                on_press=partial(self._set_screen, screen_name),
+            )
+            screen = RateScreen(
+                name=screen_name
+            )
+            self._screen_manager.add_widget(screen)
+            list_item.add_widget(IconLeftWidget(icon=icon))
+            menu_list_items.add_widget(list_item)
 
-        # food_screen = FoodScreen(
-        #    name = "food screen"
-        # )
+        menu_scroll_view.add_widget(menu_list_items)
+        menu_box.add_widget(menu_scroll_view)
+        self._navigation_drawer.add_widget(menu_box)
+        self.add_widget(self._screen_manager)
+        self.add_widget(self._navigation_drawer)
 
-        # activity_screen = ActivityScreen(
-        #    name = "activity screen"
-        # )
-        self.add_widget(mood_screen)
-        # self.add_widget(sleep_screen)
-        # self.add_widget(food_screen)
-        # self.add_widget(activity_screen)
+    def _set_screen(self, screen_name: str, *_):
+        """Change current screen."""
+        self._navigation_drawer.set_state("close")
+        self._screen_manager.current = screen_name
 
 
 class MainApp(MDApp):
@@ -73,7 +99,7 @@ class MainApp(MDApp):
     @staticmethod
     def init_widgets():
         """Load kv files for each widget."""
-        for widget in [MoodScreen, MoodRating, GreetingCard, CustomCard]:
+        for widget in [RateScreen, GreetingCard, CustomCard]:
             Builder.load_string(widget.get_descritpion())
 
     def callback(self, event: str, addtional_info: dict = None):
@@ -84,8 +110,6 @@ class MainApp(MDApp):
         if widget == "HelloScreen":
             if event_type == "start":
                 self.root.ids.screen_manager.current = "tipscreen2"
-        elif widget == "MoodRating":
-            pass
 
 
 def main():

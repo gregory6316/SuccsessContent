@@ -1,4 +1,4 @@
-"""Mood Screen."""
+"""Rate Screen."""
 
 import pkgutil
 
@@ -11,8 +11,8 @@ from kivy.uix.scrollview import ScrollView
 from widgets.custom_widgets import CurrentDayCard, DaysInRowCard, RateHabit, Calendar#, Chart
 
 
-class MoodScreen(Screen):
-    """Container for Mood Screen content."""
+class RateScreen(Screen):
+    """Container for RateScreen content."""
 
     def __init__(self, **kwargs):
         """Init basics.
@@ -45,15 +45,16 @@ class MoodScreen(Screen):
         )
 
         cards_panel.add_widget(current_day_card)
-        cards_panel.add_widget(DaysInRowCard(self.storage, 'mood'))
-        cards_panel.add_widget(RateHabit(self.storage, 'mood'))
-        #self.chart = Chart(
-        #    self.storage,
-        #    'mood',
-        #    height=200
-        #)
+
+        cards_panel.add_widget(DaysInRowCard(self.storage, self.name))
+        cards_panel.add_widget(RateHabit(self.storage, self.name))
+        #self.chart = Chart()
+# storage,
+# self.name,
+# height = 400
+# )
         #cards_panel.add_widget(self.chart)
-        cards_panel.add_widget(Calendar(self.storage, 'mood'))
+        cards_panel.add_widget(Calendar(self.storage, self.name))
 
         scrollview.add_widget(cards_panel)
         self.add_widget(scrollview)

@@ -1,53 +1,14 @@
-MDFloatLayout:
+MDBoxLayout:
+    orientation: "vertical"
 	MDToolbar:
 		id: toolbar
-		title: "}{avau"
+		title: "}{avau – " + rate_manager._screen_manager.current
 		elevation: 10
 		pos_hint: {'top': 1}
 		text_halign: "center"
 		anchor_title: "center"
 		left_action_items:
-			[["menu", lambda x: nav_drawer.set_state("open")]]
+			[["menu", lambda x: rate_manager._navigation_drawer.set_state("open")]]
 
-	MDNavigationLayout:
-
-		HelloScreenManager:
-			size_hint_y: 1.0 - toolbar.height / root.height
-
-
-		MDNavigationDrawer:
-			id: nav_drawer
-			MenuTestList:
-
-
-<MenuTestList@BoxLayout>:
-	orientation: "vertical"
-	padding: "8dp"
-	spacing: "8dp"
-
-	ScrollView:
-		MDList:
-			OneLineIconListItem:
-				id: mood
-				text: "Mood"
-				on_release: print("Mood button")
-				IconLeftWidget:
-					icon: "emoticon-outline"
-			OneLineIconListItem:
-				id: sleep
-				text: "Sleep"
-				on_release: print("Sleep button")
-				IconLeftWidget:
-					icon: "sleep"
-			OneLineIconListItem:
-				id: food
-				text: "Food"
-				on_release: print("Food button")
-				IconLeftWidget:
-					icon: "food-apple-outline"
-			OneLineIconListItem:
-				id: activity
-				text: "Activity"
-				on_release: print("Activity button")
-				IconLeftWidget:
-					icon: "arm-flex-outline"
+    RateScreensManger:
+        id: rate_manager
