@@ -9,9 +9,9 @@ from widgets.custom_widgets import CustomCard
 def test_get_description():
     """Test existence of of description.kv file."""
     for kv_path, module in [
-        ("widgets/greeting_card/description.kv", GreetingCard),
-        ("widgets/mood_screen/description.kv", RateScreen),
-        ("widgets/custom_widgets/description.kv", CustomCard)
+            ("widgets/greeting_card/description.kv", GreetingCard),
+            ("widgets/mood_screen/description.kv", RateScreen),
+            ("widgets/custom_widgets/description.kv", CustomCard)
     ]:
         with open(kv_path, encoding="utf-8") as kv_file:
             kv_content = kv_file.read()
@@ -24,7 +24,7 @@ def test_mood_screen():
     MainApp()
     Builder.load_string(RateScreen.get_descritpion())
     widget = RateScreen()
-    assert widget.children[0].children[0].children[1].children[0].hint_text == 'Commentary'
+    assert widget.children[0].children[0].children[1].children[1].hint_text == 'Commentary'
     assert widget.children[0].children[0].children[2].children[1].text == 'Days in a Row'
 
 

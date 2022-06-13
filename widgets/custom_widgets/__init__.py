@@ -5,8 +5,6 @@ from .description import (
     CurrentDayCard,
     DaysInRowCard,
     Chart,
-    Achievements,
-    Count,
     Calendar,
     RateHabit,
     StarButtonsContainer,

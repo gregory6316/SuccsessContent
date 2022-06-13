@@ -1,17 +1,22 @@
 """Module with custom cards."""
 from datetime import datetime, date, timedelta
+from calendar import monthrange
 import pkgutil
-#import matplotlib.pyplot as plt
-#import numpy as np
+import matplotlib.pyplot as plt
+import numpy as np
+
+from kivy.uix.button import Button
 
 from kivymd.uix.textfield import MDTextField
 from kivymd.uix.card import MDCard
-from kivymd.uix.button import MDIconButton
+from kivymd.uix.button import MDIconButton, MDFlatButton
 from kivymd.uix.label import MDLabel
+from kivymd.uix.dialog import MDDialog
 from kivymd.uix.boxlayout import MDBoxLayout
+from kivymd.uix.gridlayout import MDGridLayout
 from kivymd.uix.behaviors import RoundedRectangularElevationBehavior
 
-#from garden_matplotlib.backend_kivyagg import FigureCanvasKivyAgg
+from garden_matplotlib.backend_kivyagg import FigureCanvasKivyAgg
 
 class CustomCard(MDCard, RoundedRectangularElevationBehavior):
     """Base class for scrollable cards in screens."""
@@ -67,6 +72,7 @@ class CurrentDayCard(CustomCard):
         super().__init__(**kwargs)
 
         self.height = 80
+        self.need_update = False
 
         today = datetime.now()
         self.day = today.day
@@ -97,8 +103,14 @@ class DaysInRowCard(CustomCard):
         """Init card."""
         super().__init__(**kwargs)
 
+        self.widget = None
+        self.need_update = True
+
         self.orientation = "vertical"
         self.height = 120
+
+        self.storage = storage
+        self.key = key
 
         title = MDLabel(
             text="Days in a Row",
@@ -107,6 +119,11 @@ class DaysInRowCard(CustomCard):
             padding=(15, 0)
         )
 
+        self.add_widget(title)
+        self.update()
+
+    def update(self):
+        """Update the current state of widget."""
         days_layout = MDBoxLayout(
             orientation="horizontal",
             padding=(0, 0, 0, 15)
@@ -115,7 +132,7 @@ class DaysInRowCard(CustomCard):
         today = date.today()
         days = [today - timedelta(days=i) for i in range(6, -1, -1)]
 
-        history_dict = storage.get(key)
+        history_dict = self.storage.get(self.key)
         for day in days:
             icon = "circle-outline"
             if day in history_dict.keys():
@@ -127,8 +144,10 @@ class DaysInRowCard(CustomCard):
                 )
             )
 
-        self.add_widget(title)
-        self.add_widget(days_layout)
+        if self.widget:
+            self.remove_widget(self.widget)
+        self.widget = days_layout
+        self.add_widget(self.widget)
 
 
 class StarButtonsContainer(MDBoxLayout):
@@ -138,6 +157,8 @@ class StarButtonsContainer(MDBoxLayout):
         """Init container and create star buttons."""
         super().__init__(**kwargs)
         self.stars_count = stars_count
+        self.value = 0
+        self.size_hint_x = 1
 
         for i in range(int(self.stars_count)):
             self.add_widget(StarButton(value=i+1))
@@ -157,11 +178,7 @@ class StarButton(MDIconButton):
         for widget in self.parent.children:
             widget.icon = "star-outline" if widget.value > self.value else "star"
 
-        storage = self.parent.parent.storage
-        key = self.parent.parent.key
-        storage.put(key, date.today(), self.value, "")
-
-        #self.parent.parent.parent.parent.parent.chart.update()
+        self.parent.value = self.value
 
 
 class RateHabit(CustomCard):
@@ -173,6 +190,18 @@ class RateHabit(CustomCard):
         self.storage = storage
         self.key = key
         self.height = 120
+        self.need_update = False
+
+    def on_submit(self):
+        """Submit button event."""
+        value = self.ids.star_buttons.value
+        message = self.ids.text_field.text
+
+        storage = self.storage
+        key = self.key
+        storage.put_today(key, value, message)
+
+        self.parent.parent.parent.update()
 
 
 class CommentTextField(MDTextField):
@@ -186,70 +215,195 @@ class CommentTextField(MDTextField):
 
 class Chart(CustomCard):
     """MatPlot of habbit."""
-#
-#    def __init__(self, storage, key, **kwargs):
-#        """Init chart."""
-#        super().__init__(**kwargs)
-#        self.widget = None
-#        self.update()
-#
-#    def update(self):
-#        """Update chart."""
-#        today = datetime.now()
-#        months = [(today - timedelta(30*i)).strftime('%B') for i in range(5, -1, -1)]
-#        days = [str(i) if i > 9 else '0' + str(i) for i in range(1, 32)]
-#
-#        mood_history = storage.get(key)
-#        mood = []
-#        for i in months:
-#            month = []
-#            for j in days:
-#                if str(j) + ', ' + str(i) in mood_history.keys():
-#                    month.append(mood_history[str(j) + ', ' + str(i)])
-#                else:
-#                    month.append(0)
-#            mood.append(month)
-#        mood = np.array(mood)
-#
-#        fig, axis = plt.subplots()
-#        axis.imshow(mood)
-#        axis.set_xticks(np.arange(len(days)), labels=days)
-#        axis.set_yticks(np.arange(len(months)), labels=months)
-#
-#        plt.setp(axis.get_xticklabels(), rotation=45, ha="right",
-#         rotation_mode="anchor")
-#
-#        for i in range(len(months)):
-#            for j in range(len(days)):
-#                axis.text(j, i, mood[i, j],
-#                       ha="center", va="center", color="w")
-#
-#        axis.set_title("Mood rating over 6 month")
-#        fig.tight_layout()
-#        if self.widget:
-#            self.remove_widget(self.widget)
-#        self.widget = FigureCanvasKivyAgg(plt.gcf())
-#        self.add_widget(self.widget)
 
-
-class Achievements(CustomCard):
-    """Card with achievements."""
-
-    def __init__(self, **kwargs):
-        """Init card."""
+    def __init__(self, storage, key, **kwargs):
+        """Init chart."""
         super().__init__(**kwargs)
+        self.widget = None
+        self.need_update = True
+        self.padding = (10, 0, 10, 0)
+        self.storage = storage
+        self.key = key
 
+        self.update()
 
-class Count(CustomCard):
-    """Count statistics."""
+    def update(self):
+        """Update chart."""
+        history = self.storage.get(self.key)
 
-    def __init__(self, **kwargs):
-        """Init card."""
-        super().__init__(**kwargs)
+        today = date.today()
+        #months = [(today - timedelta(days=30*i)).strftime("%b") for i in range(5, -1, -1)]
+
+        first_month = (today.month + 7) % 12
+        if first_month == 0:
+            first_month = 12
+        first_year = today.year-1 if first_month > today.month else today.year
+        first_day = date(day=1, month=first_month, year=first_year)
+
+        values = []
+        for _ in range(6): # 6 months
+            month_values = []
+            for day in range(1, 32):
+                if day < monthrange(first_day.year, first_day.month)[1]:
+                    if first_day in history.keys():
+                        value = history[first_day]['value']
+                    else:
+                        value = 0
+                    first_day += timedelta(days=1)
+                else:
+                    value = 0
+                month_values.append(value)
+            values.append(month_values)
+        values = np.array(values)
+
+        fig, axis = plt.subplots()
+        axis.imshow(values)
+        axis.set_xticks(np.arange(31), labels=list(range(1, 32)))
+        axis.set_yticks(np.arange(6), labels=
+                        [(today - timedelta(days=30*i)).strftime("%b") for i in range(5, -1, -1)])
+
+        plt.setp(axis.get_xticklabels(), rotation=45, ha="right",
+                 rotation_mode="anchor")
+
+        for i in range(6):
+            for j in range(31):
+                axis.text(j, i, values[i, j],
+                          ha="center", va="center", color="w")
+
+        axis.set_title("Mood rating over 6 month")
+        fig.tight_layout()
+        if self.widget:
+            self.remove_widget(self.widget)
+        self.widget = FigureCanvasKivyAgg(plt.gcf())
+        self.add_widget(self.widget)
 
 class Calendar(CustomCard):
-    """Simply Calendar."""
+    """Simple Calendar."""
 
-    def __init__(self, **kwargs):
+    def __init__(self, storage, key, **kwargs):
         """Init card."""
         super().__init__(**kwargs)
+        self.need_update = False
+        self.dialog = None
+        self.orientation = "vertical"
+        self.height = 300
+        self.storage = storage
+        self.key = key
+
+        self.today = date.today()
+        first_month_day = self.today.replace(day=1)
+        first_day = first_month_day - timedelta(days=first_month_day.weekday())
+
+        weekdays_container = MDBoxLayout(
+            size_hint_y=None,
+            height=30
+        )
+        for i in range(7):
+            weekdays_container.add_widget(
+                MDLabel(
+                    text=(first_day + timedelta(days=i)).strftime("%a"),
+                    halign="center"
+                )
+            )
+
+        self.add_widget(weekdays_container)
+
+        days_container = MDGridLayout(
+            cols=7
+        )
+        for i in range(42):
+            day = first_day+timedelta(days=i)
+
+            text = (first_day+timedelta(days=i)).strftime("%d")
+            bg_color = (1, 1, 1, 1)
+            if day.month == self.today.month:
+                if day == self.today:
+                    bg_color = (0, 1, 0, 0.5)
+                is_current_month = True
+            else:
+                bg_color = (1, 1, 1, 0.5)
+                is_current_month = False
+
+            button = DayButton(text=text, background_color=bg_color, is_month=is_current_month)
+            button.bind(state=self.callback)
+            days_container.add_widget(button)
+
+        self.add_widget(days_container)
+
+    def callback(self, instance, _):
+        """Handle dialog opening."""
+        if self.dialog:
+            return
+
+        day = int(instance.text)
+        month = self.today.month
+        if not instance.is_month:
+            month = (self.today.replace(day=28)+timedelta(days=10)).month
+            if day > 15:
+                month = (self.today.replace(day=1)-timedelta(days=1)).month
+
+        year = self.today.year
+        if not instance.is_month:
+            if month < self.today.month and month == 12:
+                year -= 1
+            elif month > self.today.month and month == 1:
+                year += 1
+
+        day = date(day=day, month=month, year=year)
+
+        value = "There is no rating"
+        msg = "There is no message"
+        if day in self.storage.get(self.key):
+            value = self.storage.get_value(self.key, day)
+            msg = self.storage.get_message(self.key, day)
+
+        icon = "emoticon-outline"
+        if value == 1:
+            icon = "emoticon-sad-outline"
+        elif value == 2:
+            icon = "emoticon-confused-outline"
+        elif value == 3:
+            icon = "emoticon-neutral-outline"
+        elif value == 4:
+            icon = "emoticon-happy-outline"
+
+        dialog_container = MDBoxLayout(
+            size_hint_y=None,
+            height="20"
+        )
+        dialog_container.add_widget(
+            MDIconButton(
+                icon=icon,
+                pos_hint={"center_y": 0.5}
+            )
+        )
+        dialog_container.add_widget(
+            MDLabel(
+                text="Rating: "+str(value)+"\n"+"Message: "+msg
+            )
+        )
+
+        self.dialog = MDDialog(
+            title=day.strftime("%d %B %Y"),
+            type="custom",
+            content_cls=dialog_container,
+            buttons=[MDFlatButton(
+                text="OK",
+                on_release=self.close_dialog
+            )]
+        )
+
+        self.dialog.open()
+
+    def close_dialog(self, _):
+        """Close dialog."""
+        self.dialog.dismiss()
+        self.dialog = None
+
+class DayButton(Button):
+    """Simple Button with is_month attribute."""
+
+    def __init__(self, is_month, **kwargs):
+        """Init DayButton."""
+        super().__init__(**kwargs)
+        self.is_month = is_month

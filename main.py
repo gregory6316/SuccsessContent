@@ -46,7 +46,7 @@ class RateScreensManger(MDNavigationLayout):
                 on_press=partial(self._set_screen, screen_name),
             )
             screen = RateScreen(
-                name = screen_name
+                name=screen_name
             )
             self._screen_manager.add_widget(screen)
             list_item.add_widget(IconLeftWidget(icon=icon))
