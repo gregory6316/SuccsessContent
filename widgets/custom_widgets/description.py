@@ -232,7 +232,6 @@ class Chart(CustomCard):
         history = self.storage.get(self.key)
 
         today = date.today()
-        #months = [(today - timedelta(days=30*i)).strftime("%b") for i in range(5, -1, -1)]
 
         first_month = (today.month + 7) % 12
         if first_month == 0:
@@ -241,7 +240,7 @@ class Chart(CustomCard):
         first_day = date(day=1, month=first_month, year=first_year)
 
         values = []
-        for _ in range(6): # 6 months
+        for _ in range(6):
             month_values = []
             for day in range(1, 32):
                 if day < monthrange(first_day.year, first_day.month)[1]:
@@ -249,18 +248,21 @@ class Chart(CustomCard):
                         value = history[first_day]['value']
                     else:
                         value = 0
-                    first_day += timedelta(days=1)
+                    first_day = first_day + timedelta(days=1)
                 else:
                     value = 0
                 month_values.append(value)
+            first_day = first_day + timedelta(days=1)
             values.append(month_values)
         values = np.array(values)
 
         fig, axis = plt.subplots()
         axis.imshow(values)
         axis.set_xticks(np.arange(31), labels=list(range(1, 32)))
-        axis.set_yticks(np.arange(6), labels=
-                        [(today - timedelta(days=30*i)).strftime("%b") for i in range(5, -1, -1)])
+        axis.set_yticks(
+            np.arange(6),
+            labels=[(today.replace(day=15) - timedelta(days=30*i)).strftime("%b") for i in range(5, -1, -1)]
+        )
 
         plt.setp(axis.get_xticklabels(), rotation=45, ha="right",
                  rotation_mode="anchor")
