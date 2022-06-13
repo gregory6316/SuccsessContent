@@ -51,7 +51,7 @@ class RateScreen(Screen):
         self.chart = Chart(
             self.storage,
             self.name,
-            height=400
+            height=200
         )
         cards_panel.add_widget(self.chart)
         cards_panel.add_widget(Calendar(self.storage, self.name))
