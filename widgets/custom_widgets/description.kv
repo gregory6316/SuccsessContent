@@ -13,7 +13,7 @@
 
 <RateHabit>:
     id: box_bottom
-    padding: "20dp", 0, 0, 0
+    padding: "20dp", 0, 0, "20dp"
     orientation: "vertical"
     size: self.minimum_size
     MDLabel:
@@ -23,5 +23,13 @@
         theme_text_color: "Primary"
 
     StarButtonsContainer:
+		id: star_buttons
+
     CommentTextField:
+		id: text_field
         padding: 0, "20dp", 0, 0
+
+	MDFillRoundFlatButton:
+		pos_hint: {'right': 0.96}
+		text: "Submit"
+		on_release: box_bottom.on_submit()
