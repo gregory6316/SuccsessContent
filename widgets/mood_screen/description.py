@@ -7,9 +7,22 @@ from kivymd.uix.boxlayout import MDBoxLayout
 
 from kivy.uix.screenmanager import Screen
 from kivy.uix.scrollview import ScrollView
-
+import locale
+import gettext
 from widgets.custom_widgets import CurrentDayCard, DaysInRowCard, RateHabit, Calendar, Chart
 
+def setlocale(loc=None):
+    """  
+    **setlocale**
+    Function for setting locale
+    """
+    if loc is None:
+        l = locale.getdefaultlocale()[0]
+    else:
+        l = loc
+    lc = gettext.translation('mood_screen', localedir='locales', languages=[l])
+    lc.install()
+    return lc.gettext
 
 class RateScreen(Screen):
     """Container for RateScreen content."""
@@ -24,7 +37,7 @@ class RateScreen(Screen):
         self.storage = MDApp.get_running_app().storage
 
         super().__init__(**kwargs)
-
+        _ = setlocale()
         scrollview = ScrollView(
             do_scroll_y=True,
             do_scroll_x=False
@@ -40,7 +53,7 @@ class RateScreen(Screen):
 
         current_day_card = CurrentDayCard(
             icon='emoticon-outline',
-            msg='Have a nice day!',
+            msg=_('Have a nice day!'),
             height=80
         )
 

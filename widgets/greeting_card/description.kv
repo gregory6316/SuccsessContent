@@ -1,30 +1,31 @@
 <GreetingCard>:
+    id: gc
     orientation: "vertical"
     spacing: 14
     size_hint: [0.9, 0.7]
 	MDLabel:
-		text: "Welcome to\n[b]}{avau![/b]"
+		text: app.hello
 		text_size: self.size
-		font_size: 25
+		font_size: 50
 		markup: True
 		halign: "center"
 		valign: "middle"
 
 	MDFillRoundFlatButton:
-		text: "Start!"
+		text: app.start
 		size_hint_x: 0.6
 		size_hint_y: 0.5
 		pos_hint: {"center_x": 0.5}
 		on_press: root.dismiss()
 
 	MDRoundFlatButton:
-		text: "Rate us"
+		text: app.rate
 		size_hint_x: 0.6
 		size_hint_y: 0.5
 		pos_hint: {"center_x": 0.5}
 
 	MDLabel:
-		text: "[u][size=24][b]Powered by[/b][/size][/u]\nSuccessContent"
+		text: app.footer
 		text_size: self.size
 		markup: True
 		halign: "center"

@@ -19,7 +19,7 @@
     MDLabel:
         height: 40
         size_hint_y: None
-        text: "Rate this day mood"
+        text: app.day_rate
         theme_text_color: "Primary"
 
     StarButtonsContainer:
@@ -31,5 +31,5 @@
 
 	MDFillRoundFlatButton:
 		pos_hint: {'right': 0.96}
-		text: "Submit"
+		text: app.submit
 		on_release: box_bottom.on_submit()

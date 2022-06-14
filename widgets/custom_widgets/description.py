@@ -6,7 +6,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 from kivy.uix.button import Button
-
+import locale
+import gettext
 from kivymd.uix.textfield import MDTextField
 from kivymd.uix.card import MDCard
 from kivymd.uix.button import MDIconButton, MDFlatButton
@@ -17,6 +18,19 @@ from kivymd.uix.gridlayout import MDGridLayout
 from kivymd.uix.behaviors import RoundedRectangularElevationBehavior
 
 from garden_matplotlib.backend_kivyagg import FigureCanvasKivyAgg
+
+def setlocale(loc=None):
+    """  
+    **setlocale**
+    Function for setting locale
+    """
+    if loc is None:
+        l = locale.getdefaultlocale()[0]
+    else:
+        l = loc
+    lc = gettext.translation('custom', localedir='locales', languages=[l])
+    lc.install()
+    return lc.gettext, l
 
 class CustomCard(MDCard, RoundedRectangularElevationBehavior):
     """Base class for scrollable cards in screens."""
@@ -70,10 +84,11 @@ class CurrentDayCard(CustomCard):
         Sets empty message as default.
         """
         super().__init__(**kwargs)
-
+        self._, self.loc = setlocale()
+        locale.setlocale(locale.LC_TIME, self.loc)
         self.height = 80
         self.need_update = False
-
+        
         today = datetime.now()
         self.day = today.day
         self.weekday = today.strftime("%A")
@@ -102,7 +117,8 @@ class DaysInRowCard(CustomCard):
     def __init__(self, storage, key, **kwargs):
         """Init card."""
         super().__init__(**kwargs)
-
+        self._, self.loc = setlocale()
+        locale.setlocale(locale.LC_TIME, self.loc)
         self.widget = None
         self.need_update = True
 
@@ -113,7 +129,7 @@ class DaysInRowCard(CustomCard):
         self.key = key
 
         title = MDLabel(
-            text="Days in a Row",
+            text=_("Days in a Row"),
             size_hint_y=None,
             height=40,
             padding=(15, 0)
@@ -128,7 +144,7 @@ class DaysInRowCard(CustomCard):
             orientation="horizontal",
             padding=(0, 0, 0, 15)
         )
-
+        locale.setlocale(locale.LC_TIME, self.loc)
         today = date.today()
         days = [today - timedelta(days=i) for i in range(6, -1, -1)]
 
@@ -210,7 +226,8 @@ class CommentTextField(MDTextField):
     def __init__(self, **kwargs):
         """Init comment text field."""
         super().__init__(**kwargs)
-        self.hint_text = "Commentary"
+        _ = setlocale()[0]
+        self.hint_text = _("Commentary")
 
 
 class Chart(CustomCard):
@@ -224,15 +241,14 @@ class Chart(CustomCard):
         self.padding = (10, 0, 10, 0)
         self.storage = storage
         self.key = key
-
+        self._, self.loc = setlocale()
         self.update()
 
     def update(self):
         """Update chart."""
         history = self.storage.get(self.key)
-
+        locale.setlocale(locale.LC_TIME, self.loc)
         today = date.today()
-
         first_month = (today.month + 7) % 12
         if first_month == 0:
             first_month = 12
@@ -272,7 +288,8 @@ class Chart(CustomCard):
                 axis.text(j, i, values[i, j],
                           ha="center", va="center", color="w")
 
-        axis.set_title("Mood rating over 6 month")
+        _ = setlocale()[0]
+        axis.set_title(_("Rating over 6 month"))
         fig.tight_layout()
         if self.widget:
             self.remove_widget(self.widget)
@@ -291,7 +308,8 @@ class Calendar(CustomCard):
         self.height = 300
         self.storage = storage
         self.key = key
-
+        self._, self.loc = setlocale()
+        locale.setlocale(locale.LC_TIME, self.loc)
         self.today = date.today()
         first_month_day = self.today.replace(day=1)
         first_day = first_month_day - timedelta(days=first_month_day.weekday())
@@ -334,9 +352,10 @@ class Calendar(CustomCard):
 
     def callback(self, instance, _):
         """Handle dialog opening."""
+        locale.setlocale(locale.LC_TIME, self.loc)
         if self.dialog:
             return
-
+        _ = setlocale()[0]
         day = int(instance.text)
         month = self.today.month
         if not instance.is_month:
@@ -353,8 +372,8 @@ class Calendar(CustomCard):
 
         day = date(day=day, month=month, year=year)
 
-        value = "There is no rating"
-        msg = "There is no message"
+        value = _("There is no rating")
+        msg = _("There is no message")
         if day in self.storage.get(self.key):
             value = self.storage.get_value(self.key, day)
             msg = self.storage.get_message(self.key, day)
@@ -381,7 +400,7 @@ class Calendar(CustomCard):
         )
         dialog_container.add_widget(
             MDLabel(
-                text="Rating: "+str(value)+"\n"+"Message: "+msg
+                text=_("Rating: ")+str(value)+"\n"+_("Message: ")+msg
             )
         )
 

@@ -20,6 +20,7 @@ class GreetingCard(MDCard, ModalView):
     def __init__(self, **kwargs):
         """Init greetings card."""
         super().__init__(**kwargs)
+        self.hello = "Welcome to\n[b]}{avau![/b]"
         print("TODO RateUs button")
 
     @staticmethod

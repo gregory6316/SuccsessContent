@@ -9,12 +9,26 @@ from kivymd.app import MDApp
 from kivymd.uix.navigationdrawer import MDNavigationLayout, MDNavigationDrawer
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.list import MDList, OneLineIconListItem, IconLeftWidget
-
+import locale
+import gettext
 from widgets.custom_widgets import CustomCard
 from widgets.mood_screen import RateScreen
 from widgets.greeting_card import GreetingCard
 
 from custom_storage import Storage
+
+def setlocale(loc=None):
+    """  
+    **setlocale**
+    Function for setting locale
+    """
+    if loc is None:
+        l = locale.getdefaultlocale()[0]
+    else:
+        l = loc
+    lc = gettext.translation('main', localedir='locales', languages=[l])
+    lc.install()
+    return lc.gettext
 
 
 class RateScreensManger(MDNavigationLayout):
@@ -23,11 +37,12 @@ class RateScreensManger(MDNavigationLayout):
     def __init__(self, **kwargs):
         """Create screens and associated menu items."""
         super().__init__(**kwargs)
+        _ = setlocale()
         self.screens_icons = {
-            "Mood": "emoticon-outline",
-            "Sleep": "sleep",
-            "Food": "food-apple-outline",
-            "Activity": "arm-flex-outline",
+            _("Mood"): "emoticon-outline",
+            _("Sleep"): "sleep",
+            _("Food"): "food-apple-outline",
+            _("Activity"): "arm-flex-outline",
         }
 
         self._screen_manager = ScreenManager()
@@ -72,9 +87,15 @@ class MainApp(MDApp):
         super().__init__(**kwargs)
 
         self.storage = Storage("storage.dict")
-
+        _ = setlocale()
         self.init_widgets()
-
+        self.hello = _("Welcome to\n[b]}{avau![/b]")
+        self.start = _("Start!")
+        self.rate = _("Rate us")
+        self.footer = _("[u][size=24][b]Powered by[/b][/size][/u]\nSuccessContent")
+        self.day_rate = _("Rate this day mood")
+        self.title = _("}{avau")
+        self.submit = _("Submit")
         self.theme_cls.primary_palette = "Green"  # "Purple", "Red"
 
     def on_start(self):
