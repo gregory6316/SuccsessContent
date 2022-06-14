@@ -1,4 +1,13 @@
-"""Module with custom cards."""
+"""
+.. module:: custom_widgets
+   :synopsis:
+       Module with custom cards.
+
+.. moduleauthor:: SuccsessContent <github.com/SuccsessContent>
+
+"""
+import locale
+import gettext
 from datetime import datetime, date, timedelta
 from calendar import monthrange
 import pkgutil
@@ -6,8 +15,6 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 from kivy.uix.button import Button
-import locale
-import gettext
 from kivymd.uix.textfield import MDTextField
 from kivymd.uix.card import MDCard
 from kivymd.uix.button import MDIconButton, MDFlatButton
@@ -19,24 +26,31 @@ from kivymd.uix.behaviors import RoundedRectangularElevationBehavior
 
 from garden_matplotlib.backend_kivyagg import FigureCanvasKivyAgg
 
+
+
 def setlocale(loc=None):
-    """  
-    **setlocale**
-    Function for setting locale
+    """
+    Function for setting locale.
+
     """
     if loc is None:
-        l = locale.getdefaultlocale()[0]
+        locs = locale.getdefaultlocale()[0]
     else:
-        l = loc
-    lc = gettext.translation('custom', localedir='locales', languages=[l])
-    lc.install()
-    return lc.gettext, l
+        locs = loc
+    lc_locs = gettext.translation('custom', localedir='locales', languages=[locs])
+    lc_locs.install()
+    return lc_locs.gettext, locs
 
 class CustomCard(MDCard, RoundedRectangularElevationBehavior):
-    """Base class for scrollable cards in screens."""
+    """
+    Base class for scrollable cards in screens.
+
+    """
 
     def __init__(self, **kwargs):
-        """Init this class. Sets radius for card, and independence of size from window."""
+        """
+        Init this class. Sets radius for card, and independence of size from window.
+        """
         super().__init__(**kwargs)
         self.radius = [20]
         self.size_hint_y = None
@@ -45,18 +59,26 @@ class CustomCard(MDCard, RoundedRectangularElevationBehavior):
 
     @staticmethod
     def get_descritpion() -> str:
-        """Return kv description content."""
+        """
+        Return kv description content.
+
+        """
         return pkgutil.get_data(__name__, "description.kv").decode("utf-8")
 
 
 class LabelUnderIconWidget(MDBoxLayout):
-    """Widget to paste IconButton and Label vertically."""
+    """
+    Widget to paste IconButton and Label vertically.
+
+    """
 
     def __init__(self, icon, text, **kwargs):
-        """Init this widget.
+        """
+        Init this widget.
 
         Adds MDIconButton and MDLabel vertically.
         Sets on_press to MDIconButton.
+
         """
         super().__init__(**kwargs)
         self.orientation = "vertical"
@@ -75,20 +97,24 @@ class LabelUnderIconWidget(MDBoxLayout):
         self.add_widget(self.label)
 
 class CurrentDayCard(CustomCard):
-    """Card with icon, current date and some message."""
+    """
+    Card with icon, current date and some message.
+
+    """
 
     def __init__(self, icon="emoticon-outline", msg="", **kwargs):
-        """Init this card.
+        """
+        Init this card.
 
         Sets 'emoticon-outline' icon as default.
         Sets empty message as default.
+
         """
         super().__init__(**kwargs)
         self._, self.loc = setlocale()
         locale.setlocale(locale.LC_TIME, self.loc)
         self.height = 80
         self.need_update = False
-        
         today = datetime.now()
         self.day = today.day
         self.weekday = today.strftime("%A")
@@ -112,10 +138,16 @@ class CurrentDayCard(CustomCard):
         self.add_widget(date_cheer_label)
 
 class DaysInRowCard(CustomCard):
-    """Card with title and list of 6 last days, their states, and current day with empty state."""
+    """
+    Card with title and list of 6 last days, their states, and current day with empty state.
+
+    """
 
     def __init__(self, storage, key, **kwargs):
-        """Init card."""
+        """
+        Init card.
+
+        """
         super().__init__(**kwargs)
         self._, self.loc = setlocale()
         locale.setlocale(locale.LC_TIME, self.loc)
@@ -129,7 +161,7 @@ class DaysInRowCard(CustomCard):
         self.key = key
 
         title = MDLabel(
-            text=_("Days in a Row"),
+            text=self._("Days in a Row"),
             size_hint_y=None,
             height=40,
             padding=(15, 0)
@@ -139,7 +171,10 @@ class DaysInRowCard(CustomCard):
         self.update()
 
     def update(self):
-        """Update the current state of widget."""
+        """
+        Update the current state of widget.
+
+        """
         days_layout = MDBoxLayout(
             orientation="horizontal",
             padding=(0, 0, 0, 15)
@@ -167,10 +202,16 @@ class DaysInRowCard(CustomCard):
 
 
 class StarButtonsContainer(MDBoxLayout):
-    """Container with several star buttons."""
+    """
+    Container with several star buttons.
+
+    """
 
     def __init__(self, stars_count=5, **kwargs):
-        """Init container and create star buttons."""
+        """
+        Init container and create star buttons.
+
+        """
         super().__init__(**kwargs)
         self.stars_count = stars_count
         self.value = 0
@@ -181,16 +222,25 @@ class StarButtonsContainer(MDBoxLayout):
 
 
 class StarButton(MDIconButton):
-    """Button with star icon, should be combined in one container without other elements."""
+    """
+    Button with star icon, should be combined in one container without other elements.
+
+    """
 
     def __init__(self, value, **kwargs):
-        """Init StarButton."""
+        """
+        **StarButton.__init__**
+        Init StarButton.
+        """
         super().__init__(**kwargs)
         self.value = value
         self.icon = "star-outline"
 
     def handle_click(self):
-        """Handle click on button, change state of other buttons in this container."""
+        """
+        Handle click on button, change state of other buttons in this container.
+
+        """
         for widget in self.parent.children:
             widget.icon = "star-outline" if widget.value > self.value else "star"
 
@@ -198,10 +248,16 @@ class StarButton(MDIconButton):
 
 
 class RateHabit(CustomCard):
-    """Card to rate your habit today."""
+    """
+    Card to rate your habit today.
+
+    """
 
     def __init__(self, storage, key, **kwargs):
-        """Init card."""
+        """
+        Init card.
+
+        """
         super().__init__(**kwargs)
         self.storage = storage
         self.key = key
@@ -209,7 +265,10 @@ class RateHabit(CustomCard):
         self.need_update = False
 
     def on_submit(self):
-        """Submit button event."""
+        """
+        Submit button event.
+
+        """
         value = self.ids.star_buttons.value
         message = self.ids.text_field.text
 
@@ -221,20 +280,32 @@ class RateHabit(CustomCard):
 
 
 class CommentTextField(MDTextField):
-    """Text field for comment about day."""
+    """
+    Text field for comment about day.
+
+    """
 
     def __init__(self, **kwargs):
-        """Init comment text field."""
+        """
+        Init comment text field.
+
+        """
         super().__init__(**kwargs)
         _ = setlocale()[0]
         self.hint_text = _("Commentary")
 
 
 class Chart(CustomCard):
-    """MatPlot of habbit."""
+    """
+    MatPlot of habbit.
+
+    """
 
     def __init__(self, storage, key, **kwargs):
-        """Init chart."""
+        """
+        Init chart.
+
+        """
         super().__init__(**kwargs)
         self.widget = None
         self.need_update = True
@@ -245,7 +316,10 @@ class Chart(CustomCard):
         self.update()
 
     def update(self):
-        """Update chart."""
+        """
+        Update chart.
+
+        """
         history = self.storage.get(self.key)
         locale.setlocale(locale.LC_TIME, self.loc)
         today = date.today()
@@ -297,10 +371,16 @@ class Chart(CustomCard):
         self.add_widget(self.widget)
 
 class Calendar(CustomCard):
-    """Simple Calendar."""
+    """
+    Simple Calendar.
+
+    """
 
     def __init__(self, storage, key, **kwargs):
-        """Init card."""
+        """
+        Init card.
+
+        """
         super().__init__(**kwargs)
         self.need_update = False
         self.dialog = None
@@ -351,7 +431,10 @@ class Calendar(CustomCard):
         self.add_widget(days_container)
 
     def callback(self, instance, _):
-        """Handle dialog opening."""
+        """
+        Handle dialog opening.
+
+        """
         locale.setlocale(locale.LC_TIME, self.loc)
         if self.dialog:
             return
@@ -417,14 +500,23 @@ class Calendar(CustomCard):
         self.dialog.open()
 
     def close_dialog(self, _):
-        """Close dialog."""
+        """
+        Close dialog.
+
+        """
         self.dialog.dismiss()
         self.dialog = None
 
 class DayButton(Button):
-    """Simple Button with is_month attribute."""
+    """
+    Simple Button with is_month attribute.
+
+    """
 
     def __init__(self, is_month, **kwargs):
-        """Init DayButton."""
+        """
+        Init DayButton.
+
+        """
         super().__init__(**kwargs)
         self.is_month = is_month

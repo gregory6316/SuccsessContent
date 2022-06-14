@@ -1,5 +1,14 @@
-"""Rate Screen."""
+"""
+.. module:: mood_screen
+   :synopsis:
+       Rate Screen.
 
+.. moduleauthor:: SuccsessContent <github.com/SuccsessContent>
+
+
+"""
+import locale
+import gettext
 import pkgutil
 
 from kivymd.app import MDApp
@@ -7,32 +16,37 @@ from kivymd.uix.boxlayout import MDBoxLayout
 
 from kivy.uix.screenmanager import Screen
 from kivy.uix.scrollview import ScrollView
-import locale
-import gettext
 from widgets.custom_widgets import CurrentDayCard, DaysInRowCard, RateHabit, Calendar, Chart
 
+
+
 def setlocale(loc=None):
-    """  
-    **setlocale**
-    Function for setting locale
+    """
+    Function for setting locale.
+
     """
     if loc is None:
-        l = locale.getdefaultlocale()[0]
+        locs = locale.getdefaultlocale()[0]
     else:
-        l = loc
-    lc = gettext.translation('mood_screen', localedir='locales', languages=[l])
-    lc.install()
-    return lc.gettext
+        locs = loc
+    lc_loc = gettext.translation('mood_screen', localedir='locales', languages=[locs])
+    lc_loc.install()
+    return lc_loc.gettext
 
 class RateScreen(Screen):
-    """Container for RateScreen content."""
+    """
+    Container for RateScreen content.
+
+    """
 
     def __init__(self, **kwargs):
-        """Init basics.
+        """
+        Init basics.
 
         Inits scrollable container for cards.
         Inits cards.
         Inits greeting card if the first run.
+
         """
         self.storage = MDApp.get_running_app().storage
 
@@ -73,7 +87,10 @@ class RateScreen(Screen):
         self.add_widget(scrollview)
 
     def update(self):
-        """Update the cards statuses."""
+        """
+        Update the cards statuses.
+
+        """
         cards = self.children[0].children[0].children
         for card in cards:
             if card.need_update:
@@ -81,5 +98,8 @@ class RateScreen(Screen):
 
     @staticmethod
     def get_descritpion() -> str:
-        """Return kv description content."""
+        """
+        Return kv description content.
+
+        """
         return pkgutil.get_data(__name__, "description.kv").decode("utf-8")

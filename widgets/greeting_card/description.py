@@ -1,4 +1,10 @@
-"""Pop-up card with greetings info."""
+"""
+.. module:: greeting_card
+   :synopsis:
+       Pop-up card with greetings info.
+.. moduleauthor:: SuccsessContent <github.com/SuccsessContent>
+
+"""
 
 import pkgutil
 from kivy.uix.modalview import ModalView
@@ -6,7 +12,8 @@ from kivymd.uix.card import MDCard
 
 
 class GreetingCard(MDCard, ModalView):
-    """Card with greetings message in first run of app.
+    """
+    Card with greetings message in first run of app.
 
     Code is in description.kv file.
 
@@ -15,17 +22,23 @@ class GreetingCard(MDCard, ModalView):
         "Start!" button: closes greetin card.
         "Rate us" button: allows user to rate the app.
         "Powered by" message.
+
     """
 
     def __init__(self, **kwargs):
-        """Init greetings card."""
+        """
+        Init greetings card.
+        """
         super().__init__(**kwargs)
         self.hello = "Welcome to\n[b]}{avau![/b]"
         print("TODO RateUs button")
 
     @staticmethod
     def get_descritpion() -> str:
-        """Return kv description content."""
+        """
+        Return kv description content.
+
+        """
         return pkgutil.get_data(__name__, "description.kv").decode("utf-8")
 
     # @staticmethod
