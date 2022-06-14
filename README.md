@@ -15,10 +15,8 @@ Python collaborative project for uneex course
 * Analyze your sleeping
 * Track the food you eat everyday
 * Start and track exercising in your tempo
-* Create goals
 * Gather and explore your daily/weekly/mothly/year statistics
 * Enjoy the pretty graphics
-* Export your statisitcs in many extensions
 
 ## Architecture
 
