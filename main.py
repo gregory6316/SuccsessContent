@@ -88,11 +88,11 @@ class RateScreensManger(MDNavigationLayout):
 class MainApp(MDApp):
     """Main class that controls communication between widgets, components and storage."""
 
-    def __init__(self, **kwargs):
+    def __init__(self, storage_path="storage.dict", **kwargs):
         """Init this class."""
         super().__init__(**kwargs)
 
-        self.storage = Storage("storage.dict")
+        self.storage = Storage(storage_path)
         _ = setlocale()
         self.init_widgets()
         self.hello = _("Welcome to\n[b]}{avau![/b]")
