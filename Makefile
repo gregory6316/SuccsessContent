@@ -15,15 +15,15 @@ run: prepare_venv
 
 docs: prepare_venv
 	. ${VENV_NAME}/bin/activate && cd docs && make html
-	 open docs/build/html/index.html
+	 xdg-open docs/build/html/index.html
 	
 	
 
 test: prepare_venv
 	 > storage.dict
 	. ${VENV_NAME}/bin/activate; python3 -m pytest tests -W ignore::DeprecationWarning
-	pylint $$(git ls-files '*.py')
-	pydocstyle $$(git ls-files '*.py')
+	. ${VENV_NAME}/bin/activate; pylint $$(git ls-files '*.py')
+	. ${VENV_NAME}/bin/activate; pydocstyle $$(git ls-files '*.py')
 
 clean_venv:
 	rm -rf success_venv
