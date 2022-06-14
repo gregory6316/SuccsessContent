@@ -21,9 +21,9 @@ docs: prepare_venv
 
 test: prepare_venv
 	 > storage.dict
-	. ${VENV_NAME}/bin/activate; python3 -m pytest tests
-	pylint $(git ls-files '*.py')
-	docstyle $(git ls-files '*.py')
+	. ${VENV_NAME}/bin/activate; python3 -m pytest tests -W ignore::DeprecationWarning
+	pylint $$(git ls-files '*.py')
+	pydocstyle $$(git ls-files '*.py')
 
 clean_venv:
 	rm -rf success_venv

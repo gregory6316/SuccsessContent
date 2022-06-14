@@ -1,9 +1,12 @@
 """Tests for UI."""
 from kivy.lang import Builder
+import kivy
+import kivymd
 from main import MainApp
 from widgets.mood_screen import RateScreen
 from widgets.greeting_card import GreetingCard
-from widgets.custom_widgets import CustomCard
+from widgets.custom_widgets import CustomCard, description
+
 
 
 def test_get_description():
@@ -24,8 +27,12 @@ def test_mood_screen():
     MainApp()
     Builder.load_string(RateScreen.get_descritpion())
     widget = RateScreen()
-    assert widget.children[0].children[0].children[1].children[1].hint_text == 'Commentary'
-    assert widget.children[0].children[0].children[2].children[1].text == 'Days in a Row'
+    assert isinstance(widget.children[0], kivy.uix.scrollview.ScrollView)
+    assert isinstance(widget.children[0].children[0], kivymd.uix.boxlayout.MDBoxLayout)
+    assert isinstance(widget.children[0].children[0].children[2], description.RateHabit)
+    assert isinstance(widget.children[0].children[0].children[2].children[1], description.CommentTextField)
+    assert widget.children[0].children[0].children[2].children[1].hint_text in ['Commentary', 'Комментарий']
+    assert widget.children[0].children[0].children[2].children[0].text in ['Готово', 'Submit']
 
 
 def test_greeting_card():
@@ -33,7 +40,8 @@ def test_greeting_card():
     MainApp()
     Builder.load_string(GreetingCard.get_descritpion())
     widget = GreetingCard()
-    assert widget.children[0].text == '[u][size=24][b]Powered by[/b][/size][/u]\nSuccessContent'
-    assert widget.children[1].text == 'Rate us'
-    assert widget.children[2].text == 'Start!'
-    assert widget.children[3].text == 'Welcome to\n[b]}{avau![/b]'
+    assert isinstance(widget.children[0], kivymd.uix.label.MDLabel)
+    assert widget.children[0].text in ['[u][size=24][b]Powered by[/b][/size][/u]\nSuccessContent', '[u][size=24][b]Создано[/b][/size][/u]\nSuccessContent']
+    assert widget.children[1].text in ['Rate us', 'Оценить']
+    assert widget.children[2].text in ['Start!', 'Начать!']
+    assert widget.children[3].text in ['Welcome to\n[b]}{avau![/b]', 'Добро пожаловать в\n[b]Как дела![/b]']

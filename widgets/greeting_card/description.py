@@ -17,10 +17,10 @@ class GreetingCard(MDCard, ModalView):
 
     Code is in description.kv file.
     Contains:
-        "Welcome to }{avau" message.
-        "Start!" button: closes greetin card.
-        "Rate us" button: allows user to rate the app.
-        "Powered by" message.
+    "Welcome to }{avau" message.
+    "Start!" button: closes greetin card.
+    "Rate us" button: allows user to rate the app.
+    "Powered by" message.
 
     """
 
