@@ -62,6 +62,7 @@ Welcome to }{avau!'s documentation!
 ===================================
 .. automodule:: main
    :members:
+   :noindex:
    :synopsis: 
        File with application entry point and intercomponents communication controller.
 

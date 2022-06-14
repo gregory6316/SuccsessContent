@@ -1,4 +1,6 @@
-"""
+#pylint: disable=E1101
+"""Mood screen.
+
 .. module:: mood_screen
    :synopsis:
        Rate Screen.
@@ -21,10 +23,7 @@ from widgets.custom_widgets import CurrentDayCard, DaysInRowCard, RateHabit, Cal
 
 
 def setlocale(loc=None):
-    """
-    Function for setting locale.
-
-    """
+    """Set locale."""
     if loc is None:
         locs = locale.getdefaultlocale()[0]
     else:
@@ -34,19 +33,14 @@ def setlocale(loc=None):
     return lc_loc.gettext
 
 class RateScreen(Screen):
-    """
-    Container for RateScreen content.
-
-    """
+    """Container for RateScreen content."""
 
     def __init__(self, **kwargs):
-        """
-        Init basics.
+        """Init basics.
 
         Inits scrollable container for cards.
         Inits cards.
         Inits greeting card if the first run.
-
         """
         self.storage = MDApp.get_running_app().storage
 
@@ -87,10 +81,7 @@ class RateScreen(Screen):
         self.add_widget(scrollview)
 
     def update(self):
-        """
-        Update the cards statuses.
-
-        """
+        """Update the cards statuses."""
         cards = self.children[0].children[0].children
         for card in cards:
             if card.need_update:
@@ -98,8 +89,5 @@ class RateScreen(Screen):
 
     @staticmethod
     def get_descritpion() -> str:
-        """
-        Return kv description content.
-
-        """
+        """Return kv description content."""
         return pkgutil.get_data(__name__, "description.kv").decode("utf-8")

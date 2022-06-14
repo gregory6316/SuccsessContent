@@ -1,27 +1,29 @@
+SHELL := /bin/bash
 VENV_NAME?=success_venv
-PYTHON=${VENV_NAME}/bin/python
+PYTHON=${VENV_NAME}/bin/python3
 
 prepare_venv: $(VENV_NAME)/bin/activate
 
 $(VENV_NAME)/bin/activate: requirements.txt
-	test -d $(VENV_NAME) || virtualenv -p python3 $(VENV_NAME)
-	${PYTHON} -m pip install -U pip
+	test -d ${VENV_NAME} || virtualenv ${VENV_NAME}
+	. ${VENV_NAME}/bin/activate; pip install -Ur requirements.txt
 	${PYTHON} -m pip install -r requirements.txt
-	touch $(VENV_NAME)/bin/activate
+	touch $(VENV_NAME)/touchfile
 
 run: prepare_venv
 	${PYTHON} main.py
 
-build_docs: prepare_venv
-	cd docs
-	make html
-	cd build/html
-	mozilla index.html
+docs: prepare_venv
+	. ${VENV_NAME}/bin/activate && cd docs && make html
+	 open docs/build/html/index.html
+	
 	
 
-test:
-	echo '' > storage.dict
-	pytest tests
+test: prepare_venv
+	 > storage.dict
+	. ${VENV_NAME}/bin/activate; python3 -m pytest tests
+	pylint $(git ls-files '*.py')
+	docstyle $(git ls-files '*.py')
 
 clean_venv:
 	rm -rf success_venv

@@ -1,5 +1,6 @@
-'''
-Backend KivyAgg
+"""
+Backend KivyAgg.
+
 =====
 
 .. image:: images/backend_agg_example.jpg
@@ -17,7 +18,6 @@ more information since both backends can be used in the exact same way.
 
 Examples
 --------
-
 Example of a simple Hello world matplotlib App::
 
     fig, ax = plt.subplots()
@@ -62,7 +62,7 @@ The events available are the same events available from Backend Kivy.::
 
     fig.canvas.mpl_connect('mpl_event', my_callback)
 
-'''
+"""
 
 from __future__ import (absolute_import, division, print_function,
                         unicode_literals)
@@ -104,8 +104,7 @@ my_canvas = None
 
 
 def new_figure_manager(num, *args, **kwargs):
-    '''Create a new figure manager instance for the figure given.
-    '''
+    """Create a new figure manager instance for the figure given."""
     # if a main-level app must be created, this (and
     # new_figure_manager_given_figure) is the usual place to
     # do it -- see backend_wx, backend_wxagg and backend_tkagg for
@@ -117,9 +116,7 @@ def new_figure_manager(num, *args, **kwargs):
 
 
 def new_figure_manager_given_figure(num, figure):
-    '''Create a new figure manager instance and a new figure canvas instance
-       for the given figure.
-    '''
+    """Create a new figure manager instance and a new figure canvas instance for the given figure."""
     canvas = FigureCanvasKivyAgg(figure)
     manager = FigureManagerKivy(canvas, num)
     global my_canvas
@@ -130,13 +127,13 @@ def new_figure_manager_given_figure(num, figure):
 
 
 class MPLKivyApp(App):
-    '''Creates the App initializing a FloatLayout with a figure and toolbar
-       widget.
-    '''
+    """Creates the App initializing a FloatLayout with a figure and toolbar widget."""
+
     figure = ObjectProperty(None)
     toolbar = ObjectProperty(None)
 
     def build(self):
+        """Func."""
         EventLoop.ensure_window()
         layout = FloatLayout()
         if self.figure:
@@ -149,10 +146,10 @@ class MPLKivyApp(App):
 
 
 class Show(ShowBase):
-    '''mainloop needs to be overwritten to define the show() behavior for kivy
-       framework.
-    '''
+    """mainloop needs to be overwritten to define the show() behavior for kivy framework."""
+    
     def mainloop(self):
+        """Func."""
         global my_canvas
         global toolbar
         app = App.get_running_app()
@@ -164,11 +161,10 @@ show = Show()
 
 
 class FigureCanvasKivyAgg(FigureCanvasKivy, FigureCanvasAgg):
-    '''FigureCanvasKivyAgg class. See module documentation for more
-    information.
-    '''
+    """FigureCanvasKivyAgg class. See module documentation for more information."""
 
     def __init__(self, figure, **kwargs):
+        """Func."""
         self.figure = figure
         self.bind(size=self._on_size_changed)
         super(FigureCanvasKivyAgg, self).__init__(figure=self.figure, **kwargs)
@@ -177,9 +173,7 @@ class FigureCanvasKivyAgg(FigureCanvasKivy, FigureCanvasAgg):
         self.blit()
 
     def draw(self):
-        '''
-        Draw the figure using the agg renderer
-        '''
+        """Draw the figure using the agg renderer."""
         self.canvas.clear()
         FigureCanvasAgg.draw(self)
         if self.blitbox is None:
@@ -210,12 +204,12 @@ class FigureCanvasKivyAgg(FigureCanvasKivy, FigureCanvasAgg):
     filetypes['png'] = 'Portable Network Graphics'
 
     def _on_pos_changed(self, *args):
+        """Func."""
         if self.img_rect is not None:
             self.img_rect.pos = self.pos
 
     def _print_image(self, filename, *args, **kwargs):
-        '''Write out format png. The image is saved with the filename given.
-        '''
+        """Write out format png. The image is saved with the filename given."""
         l, b, w, h = self.figure.bbox.bounds
         img = None
         if self.img_texture is None:
@@ -228,7 +222,7 @@ class FigureCanvasKivyAgg(FigureCanvasKivy, FigureCanvasAgg):
             img = Image(self.img_texture)
         img.save(filename)
 
-''' Standard names that backend.__init__ is expecting '''
+""" Standard names that backend.__init__ is expected."""
 FigureCanvas = FigureCanvasKivyAgg
 FigureManager = FigureManagerKivy
 NavigationToolbar = NavigationToolbar2Kivy

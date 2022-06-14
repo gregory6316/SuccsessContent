@@ -1,3 +1,5 @@
+#pylint: disable=W0622
+#pylint: disable=C0103
 # Configuration file for the Sphinx documentation builder.
 #
 # This file only contains a selection of the most common options. For a full
@@ -10,6 +12,7 @@
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
+"""Config."""
 import os
 import sys
 sys.path.insert(0, os.path.abspath('../..'))
@@ -17,9 +20,9 @@ sys.setrecursionlimit(1500)
 
 # -- Project information -----------------------------------------------------
 
-project = '}{avau!'
-copyright = '2022, Success Content'
-author = 'Success Content'
+project = '}{AVAU!'
+copyright = '2022, SUCCSESS CONTENT'
+author = 'SUCCSESS CONTENT'
 
 # The full version, including alpha/beta/rc tags
 release = '0.1'
@@ -57,9 +60,7 @@ latex_elements = {
     'papersize': 'a4paper',
     'pointsize': '10pt',
     }
-latex_elements = {
-    'preamble': '\DeclareUnicodeCharacter{2591}{~}\n\DeclareUnicodeCharacter{2593}{-}\n\DeclareUnicodeCharacter{2592}{=}\n\DeclareUnicodeCharacter{2588}{*}\n\inputencoding{utf8}'
-}
+
 
 # -- Options for HTML output -------------------------------------------------
 

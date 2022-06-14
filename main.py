@@ -1,4 +1,5 @@
-"""
+"""Main.
+
 .. module:: main
    :synopsis:
        File with application entry point and intercomponents communication controller.
@@ -26,30 +27,21 @@ from custom_storage import Storage
 
 
 def setlocale(loc=None):
-    """
-    Function for setting locale.
-
-    """
-    if loc is None:
-        locs = locale.getdefaultlocale()[0]
-    else:
+    """Set locale."""
+    if loc :
         locs = loc
+    else:
+        locs = locale.getdefaultlocale()[0]
     lc_loc = gettext.translation('main', localedir='locales', languages=[locs])
     lc_loc.install()
     return lc_loc.gettext
 
 
 class RateScreensManger(MDNavigationLayout):
-    """
-    Main screen manager.
-
-    """
+    """Main screen manager."""
 
     def __init__(self, **kwargs):
-        """
-        Create screens and associated menu items.
-
-        """
+        """Create screens and associated menu items."""
         super().__init__(**kwargs)
         _ = setlocale()
         self.screens_icons = {
@@ -88,24 +80,16 @@ class RateScreensManger(MDNavigationLayout):
         self.add_widget(self._navigation_drawer)
 
     def _set_screen(self, screen_name: str, *_):
-        """
-        Change current screen.
-
-        """
+        """Change current screen."""
         self._navigation_drawer.set_state("close")
         self._screen_manager.current = screen_name
 
 
 class MainApp(MDApp):
-    """
-    Main class that controls communication between widgets, components and storage.
-
-    """
+    """Main class that controls communication between widgets, components and storage."""
 
     def __init__(self, **kwargs):
-        """
-        Init this class.
-        """
+        """Init this class."""
         super().__init__(**kwargs)
 
         self.storage = Storage("storage.dict")
@@ -121,10 +105,7 @@ class MainApp(MDApp):
         self.theme_cls.primary_palette = "Green"  # "Purple", "Red"
 
     def on_start(self):
-        """
-        Run after the application was built, but not started yet.
-
-        """
+        """Run after the application was built, but not started yet."""
         super().on_start()
         if not self.storage.inited():
             self.storage.set_inited()
@@ -144,18 +125,12 @@ class MainApp(MDApp):
 
     @staticmethod
     def init_widgets():
-        """
-        Load kv files for each widget.
-
-        """
+        """Load kv files for each widget."""
         for widget in [RateScreen, GreetingCard, CustomCard]:
             Builder.load_string(widget.get_descritpion())
 
     def callback(self, event: str, addtional_info: dict = None):
-        """
-        Process callbacks with communications between widgets.
-
-        """
+        """Process callbacks with communications between widgets."""
         print(f"Event! {event}")
         print(f"Value! {addtional_info}")
         widget, event_type = event.split(".")
@@ -165,10 +140,7 @@ class MainApp(MDApp):
 
 
 def main():
-    """
-    Run the application.
-
-    """
+    """Run the application."""
     MainApp().run()
 
 if __name__ == "__main__":
