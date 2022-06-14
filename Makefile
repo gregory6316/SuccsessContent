@@ -13,9 +13,14 @@ run: prepare_venv
 	${PYTHON} main.py
 
 build_docs: prepare_venv
-	echo 'docs :)'
+	cd docs
+	make html
+	cd build/html
+	mozilla index.html
+	
 
 test:
+	echo '' > storage.dict
 	pytest tests
 
 clean_venv:
