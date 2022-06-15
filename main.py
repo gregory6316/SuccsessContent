@@ -84,6 +84,11 @@ class RateScreensManger(MDNavigationLayout):
         self._navigation_drawer.set_state("close")
         self._screen_manager.current = screen_name
 
+    @property
+    def screen_manager(self):
+        """Return screen manager."""
+        return self._screen_manager
+
 
 class MainApp(MDApp):
     """Main class that controls communication between widgets, components and storage."""
