@@ -4,7 +4,6 @@ kivy
 kivymd
 pylint
 pydocstyle
-kivy_garden.graph
 python-gettext
 Sphinx
 matplotlib

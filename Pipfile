@@ -6,7 +6,6 @@ name = "pypi"
 [packages]
 kivy = "*"
 kivymd = "*"
-"kivy-garden.graph" = "*"
 python-gettext = "*"
 matplotlib = "*"
 

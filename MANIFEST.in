@@ -1,0 +1,10 @@
+recursive-include po *.po
+recursive-include tests *
+recursive-include docs *
+recursive-include img *
+recursive-include locales *
+recursive-include widgets *
+recursive-include garden_matplotlib *
+include *.kv
+include *.md
+include Makefile
