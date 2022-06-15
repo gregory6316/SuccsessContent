@@ -11,6 +11,7 @@
 from functools import partial
 import locale
 import gettext
+import os
 
 from kivy.lang import Builder
 from kivy.uix.screenmanager import ScreenManager
@@ -26,13 +27,18 @@ from widgets.greeting_card import GreetingCard
 from custom_storage import Storage
 
 
+def _module_dir(rel_path):
+    """Return path relative to current module dir."""
+    return os.path.join(os.path.dirname(__file__), rel_path)
+
+
 def setlocale(loc=None):
     """Set locale."""
     if loc :
         locs = loc
     else:
         locs = locale.getdefaultlocale()[0]
-    lc_loc = gettext.translation('main', localedir='locales', languages=[locs])
+    lc_loc = gettext.translation('main', localedir=_module_dir('locales'), languages=[locs])
     lc_loc.install()
     return lc_loc.gettext
 
@@ -93,7 +99,11 @@ class RateScreensManger(MDNavigationLayout):
 class MainApp(MDApp):
     """Main class that controls communication between widgets, components and storage."""
 
-    def __init__(self, storage_path="storage.dict", **kwargs):
+    def __init__(
+        self,
+        storage_path=_module_dir("storage.dict"),
+        **kwargs
+    ):
         """Init this class."""
         super().__init__(**kwargs)
 
