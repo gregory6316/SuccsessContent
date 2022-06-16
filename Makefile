@@ -35,6 +35,11 @@ mo:
 docs: prepare_venv
 	. ${VENV_NAME}/bin/activate && cd docs && make html
 	 xdg-open docs/build/html/index.html
+
+sdist:
+	git clean -fd
+	. ${VENV_NAME}/bin/activate; python3 -m build -s
+
 	
 	
 
@@ -47,8 +52,9 @@ test: prepare_venv
 clean_venv:
 	rm -rf success_venv
 
-deploy:
-	echo 'buildozer is dead :('
+deploy: mo
+	. ${VENV_NAME}/bin/activate && cd docs && make html
+	. ${VENV_NAME}/bin/activate; python3 -m build -s
 
 clean:
 	git clean -fd
