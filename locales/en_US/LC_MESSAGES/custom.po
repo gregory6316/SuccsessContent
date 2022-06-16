@@ -1,0 +1,49 @@
+# English (United States) translations for }{avau.
+# Copyright (C) 2022 Succsess Content 2022
+# This file is distributed under the same license as the }{avau project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2022.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: }{avau 0.1\n"
+"Report-Msgid-Bugs-To: "
+"https://github.com/gregory6316/SuccsessContent/issues\n"
+"POT-Creation-Date: 2022-06-16 05:08+0300\n"
+"PO-Revision-Date: 2022-06-16 05:08+0300\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: en_US\n"
+"Language-Team: en_US <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.9.1\n"
+
+#: widgets/custom_widgets/description.py:142
+msgid "Days in a Row"
+msgstr ""
+
+#: widgets/custom_widgets/description.py:240
+msgid "Commentary"
+msgstr ""
+
+#: widgets/custom_widgets/description.py:302
+msgid "Rating over 6 month"
+msgstr ""
+
+#: widgets/custom_widgets/description.py:385
+msgid "There is no rating"
+msgstr ""
+
+#: widgets/custom_widgets/description.py:386
+msgid "There is no message"
+msgstr ""
+
+#: widgets/custom_widgets/description.py:413
+msgid "Rating: "
+msgstr ""
+
+#: widgets/custom_widgets/description.py:413
+msgid "Message: "
+msgstr ""
+
