@@ -38,8 +38,8 @@ docs: prepare_venv
 
 sdist: prepare_venv
 	git clean -fd
+	find . | grep -E "__pycache__$$" | xargs rm -rf
 	. ${VENV_NAME}/bin/activate; python3 -m build -s
-
 	
 	
 
@@ -54,6 +54,7 @@ clean_venv:
 
 deploy: prepare_venv mo
 	. ${VENV_NAME}/bin/activate && cd docs && make html
+	find . | grep -E "__pycache__$$" | xargs rm -rf
 	. ${VENV_NAME}/bin/activate; python3 -m build -w
 
 install: prepare_venv deploy

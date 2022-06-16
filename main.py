@@ -23,13 +23,8 @@ from kivymd.uix.list import MDList, OneLineIconListItem, IconLeftWidget
 from widgets.custom_widgets import CustomCard
 from widgets.mood_screen import RateScreen
 from widgets.greeting_card import GreetingCard
-
+from module_dir import module_dir
 from custom_storage import Storage
-
-
-def _module_dir(rel_path):
-    """Return path relative to current module dir."""
-    return os.path.join(os.path.dirname(__file__), rel_path)
 
 
 def setlocale(loc=None):
@@ -38,7 +33,7 @@ def setlocale(loc=None):
         locs = loc
     else:
         locs = locale.getdefaultlocale()[0]
-    lc_loc = gettext.translation('main', localedir=_module_dir('locales'), languages=[locs])
+    lc_loc = gettext.translation('main', localedir=module_dir('locales'), languages=[locs])
     lc_loc.install()
     return lc_loc.gettext
 
@@ -101,7 +96,7 @@ class MainApp(MDApp):
 
     def __init__(
         self,
-        storage_path=_module_dir("storage.dict"),
+        storage_path=module_dir("storage.dict"),
         **kwargs
     ):
         """Init this class."""

@@ -28,7 +28,7 @@ from kivymd.uix.gridlayout import MDGridLayout
 from kivymd.uix.behaviors import RoundedRectangularElevationBehavior
 
 from garden_matplotlib.backend_kivyagg import FigureCanvasKivyAgg
-
+from module_dir import module_dir
 
 
 def setlocale(loc=None):
@@ -37,7 +37,7 @@ def setlocale(loc=None):
         locs = loc
     else:
         locs = locale.getdefaultlocale()[0]
-    lc_locs = gettext.translation('custom', localedir='locales', languages=[locs])
+    lc_locs = gettext.translation('custom', localedir=module_dir('locales'), languages=[locs])
     lc_locs.install()
     return lc_locs.gettext, locs
 

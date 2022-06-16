@@ -19,7 +19,7 @@ from kivymd.uix.boxlayout import MDBoxLayout
 from kivy.uix.screenmanager import Screen
 from kivy.uix.scrollview import ScrollView
 from widgets.custom_widgets import CurrentDayCard, DaysInRowCard, RateHabit, Calendar, Chart
-
+from module_dir import module_dir
 
 
 def setlocale(loc=None):
@@ -28,7 +28,7 @@ def setlocale(loc=None):
         locs = locale.getdefaultlocale()[0]
     else:
         locs = loc
-    lc_loc = gettext.translation('mood_screen', localedir='locales', languages=[locs])
+    lc_loc = gettext.translation('mood_screen', localedir=module_dir('locales'), languages=[locs])
     lc_loc.install()
     return lc_loc.gettext
 
