@@ -35,8 +35,6 @@ def setlocale(loc=None):
     """Set locale."""
     if loc is None:
         locs = locale.getdefaultlocale()[0]
-        if locs == 'en_US':
-            locs = 'en_GB'
     else:
         locs = loc
     lc_locs = gettext.translation('custom', localedir='locales', languages=[locs])
