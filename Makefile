@@ -54,7 +54,11 @@ clean_venv:
 
 deploy: mo
 	. ${VENV_NAME}/bin/activate && cd docs && make html
-	. ${VENV_NAME}/bin/activate; python3 -m build -s
+	. ${VENV_NAME}/bin/activate; python3 -m build -w
+
+install: deploy
+	. ${VENV_NAME}/bin/activate; pip3 install dist/success_content-0.0.1-py3-none-any.whl 
+
 
 clean:
 	git clean -fd
