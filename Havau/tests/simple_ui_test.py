@@ -3,18 +3,18 @@ from kivy.lang import Builder
 import kivy
 import kivymd
 from main import MainApp
-from widgets.mood_screen import RateScreen
-from widgets.greeting_card import GreetingCard
-from widgets.custom_widgets import CustomCard, description
+from Havau.widgets.mood_screen import RateScreen
+from Havau.widgets.greeting_card import GreetingCard
+from Havau.widgets.custom_widgets import CustomCard, description
 
 
 
 def test_get_description():
     """Test existence of of description.kv file."""
     for kv_path, module in [
-            ("widgets/greeting_card/description.kv", GreetingCard),
-            ("widgets/mood_screen/description.kv", RateScreen),
-            ("widgets/custom_widgets/description.kv", CustomCard)
+            ("Havau/widgets/greeting_card/description.kv", GreetingCard),
+            ("Havau/widgets/mood_screen/description.kv", RateScreen),
+            ("Havau/widgets/custom_widgets/description.kv", CustomCard)
     ]:
         with open(kv_path, encoding="utf-8") as kv_file:
             kv_content = kv_file.read()

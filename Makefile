@@ -3,7 +3,7 @@ VENV_NAME?=success_venv
 PYTHON=${VENV_NAME}/bin/python3
 
 run: prepare_venv mo
-	${PYTHON} Havau/main.py
+	${PYTHON} Havau/__main__.py
 
 prepare_venv: $(VENV_NAME)/bin/activate
 

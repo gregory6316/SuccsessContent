@@ -24,7 +24,7 @@ ignore=CVS
 
 # Add files or directories matching the regex patterns to the ignore-list. The
 # regex matches against paths and can be in Posix or Windows format.
-ignore-paths=garden_matplotlib
+ignore-paths=Havau/garden_matplotlib, Havau/__main__.py
 
 # Files or directories matching the regex patterns are skipped. The regex
 # matches against base names, not paths. The default value ignores emacs file
@@ -90,7 +90,8 @@ disable=raw-checker-failed,
         suppressed-message,
         useless-suppression,
         deprecated-pragma,
-        use-symbolic-message-instead
+        use-symbolic-message-instead,
+        E0401
 
 # Enable the message, report, category or checker with the given id(s). You can
 # either give multiple identifier separated by comma (,) or put this option
@@ -333,7 +334,7 @@ ignore-comments=yes
 ignore-docstrings=yes
 
 # Imports are removed from the similarity computation
-ignore-imports=no
+ignore-imports=yes
 
 # Signatures are removed from the similarity computation
 ignore-signatures=no
