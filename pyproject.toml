@@ -1,0 +1,3 @@
+[build-system]
+requires = ["pre-commit", "pytest", "kivy", "kivymd", "pylint", "pydocstyle", "kivy_garden.graph", "python-gettext", "Sphinx", "matplotlib", "setuptools", "wheel"]
+build-backend = "setuptools.build_meta"

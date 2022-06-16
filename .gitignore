@@ -3,3 +3,6 @@ __pycache__
 *.dict
 .vscode
 .DS_Store
+*.lock
+*.egg-info
+dist
