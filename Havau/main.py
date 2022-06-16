@@ -1,6 +1,6 @@
 """Main.
 
-.. module:: main
+.. module:: Havau.main
    :synopsis:
        File with application entry point and intercomponents communication controller.
 
@@ -11,7 +11,6 @@
 from functools import partial
 import locale
 import gettext
-import os
 
 from kivy.lang import Builder
 from kivy.uix.screenmanager import ScreenManager
@@ -20,11 +19,11 @@ from kivymd.app import MDApp
 from kivymd.uix.navigationdrawer import MDNavigationLayout, MDNavigationDrawer
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.list import MDList, OneLineIconListItem, IconLeftWidget
-from widgets.custom_widgets import CustomCard
-from widgets.mood_screen import RateScreen
-from widgets.greeting_card import GreetingCard
-from module_dir import module_dir
-from custom_storage import Storage
+from Havau.widgets.custom_widgets import CustomCard
+from Havau.widgets.mood_screen import RateScreen
+from Havau.widgets.greeting_card import GreetingCard
+from Havau.module_dir import module_dir
+from Havau.custom_storage import Storage
 
 
 def setlocale(loc=None):

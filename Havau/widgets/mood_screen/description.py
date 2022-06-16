@@ -18,8 +18,8 @@ from kivymd.uix.boxlayout import MDBoxLayout
 
 from kivy.uix.screenmanager import Screen
 from kivy.uix.scrollview import ScrollView
-from widgets.custom_widgets import CurrentDayCard, DaysInRowCard, RateHabit, Calendar, Chart
-from module_dir import module_dir
+from Havau.widgets.custom_widgets import CurrentDayCard, DaysInRowCard, RateHabit, Calendar, Chart
+from Havau.module_dir import module_dir
 
 
 def setlocale(loc=None):

@@ -27,8 +27,8 @@ from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.gridlayout import MDGridLayout
 from kivymd.uix.behaviors import RoundedRectangularElevationBehavior
 
-from garden_matplotlib.backend_kivyagg import FigureCanvasKivyAgg
-from module_dir import module_dir
+from Havau.garden_matplotlib.backend_kivyagg import FigureCanvasKivyAgg
+from Havau.module_dir import module_dir
 
 
 def setlocale(loc=None):

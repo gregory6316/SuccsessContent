@@ -60,7 +60,7 @@ Welcome to }{avau!'s documentation!
 
 }{avau main
 ===================================
-.. automodule:: main
+.. automodule:: Havau.main
    :members:
    :noindex:
    :synopsis: 
@@ -69,21 +69,21 @@ Welcome to }{avau!'s documentation!
 
 }{avau custom_widgets
 ===================================
-.. automodule:: widgets.custom_widgets.description
+.. automodule:: Havau.widgets.custom_widgets.description
    :members:
    :synopsis: 
        Module with custom cards.
 
 }{avau mood_screen
 ===================================
-.. automodule:: widgets.mood_screen.description
+.. automodule:: Havau.widgets.mood_screen.description
    :members:
    :synopsis: 
        Rate Screen.
 
 }{avau greeting_card
 ===================================
-.. automodule:: widgets.greeting_card.description
+.. automodule:: Havau.widgets.greeting_card.description
    :members:
    :synopsis: 
        Pop-up card with greetings info.
