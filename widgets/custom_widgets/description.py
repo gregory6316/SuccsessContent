@@ -33,10 +33,10 @@ from garden_matplotlib.backend_kivyagg import FigureCanvasKivyAgg
 
 def setlocale(loc=None):
     """Set locale."""
-    if loc is None:
-        locs = locale.getdefaultlocale()[0]
-    else:
+    if loc:
         locs = loc
+    else:
+        locs = locale.getdefaultlocale()[0]
     lc_locs = gettext.translation('custom', localedir='locales', languages=[locs])
     lc_locs.install()
     return lc_locs.gettext, locs
