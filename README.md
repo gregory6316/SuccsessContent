@@ -1,36 +1,31 @@
 # }{avau by SuccsessContent
 
 <img src = "./img/logo.png" align="right"
-	alt="SuccessContent Team" width="120" height="120">
+  alt="SuccessContent Team" width="120" height="120">
 
 Python collaborative project for uneex course
 
-**}{avau** is a mobile application for daily tracking of habbits, moods, exercises, and many more!
+}{avau is a mobile application for daily tracking of habbits, moods, exercises, and many more!
 
 ## Opportunities
-**}{avau** is professional self-imporvement mentor-app. It can track many sides of your life, helping you in becoming the better version of yourself.
+}{avau is professional self-imporvement mentor-app. It can track many sides of your life, helping you in becoming the better version of yourself.
 
 * Make reflections of your daily life
 * Analyze your habbits
 * Analyze your sleeping
-* Track the food you eat everyday
-* Start and track exercising in your tempo
-* Gather and explore your daily/weekly/mothly/year statistics
-* Enjoy the pretty graphics
+* Gather and explore your mothly/year statistics
 
 ## Architecture
 
 <p align="center">
-  <img src="./img/architecture.png" alt="Architecture" width="738">
+  <img src="https://github.com/Temish09/SuccsessContent/blob/main/img/Architecture.png" alt="Architecture" width="738">
 </p>
 
 The application consists of 4 parts:
-* Application's main loop. It's the key part, hadnling the main loop and the entire data transfer between other parts.
-* Logic part, including BaseTracker and it's derivatives. BaseTracker is the main class of daily custom habbit trackers. The classes SleepingTracker, ..., correspond to narrow tasks of relevant habbit tracking.
-* Database handling part, including sqlite database, that stores users daily data. Also pandas library is used to gather statistics from data.
-* GUI part, implemented via kivy, kivymd. It gets users prompt (e.g., pressing buttons, inputing texts, ets), and displays different graphics, plotted via pyplot/seaborn.
-
-Also, the application can export data and statistics in wide range of extensions. Implemented via pandas.
+* Application's main loop. It's the key part, handling the main loop and the entire data transfer between other parts.
+* Logic part, including tracking the habits functionality behind widgets.
+* Database handling part, including kivy DictStore, that stores users daily data. 
+* GUI part, implemented via kivy, kivymd. It gets users prompt (i.e., inputing ratings, texts, ets), and displays different graphics.
 
 ## UI
 The preliminary UI concept can be found below.
@@ -39,10 +34,9 @@ The preliminary UI concept can be found below.
 
 ## Installation
 How to init repository:
-```(bash)
+(bash)
 pip install -r requirements.txt
 pre-commit install
-```
 
 ## Other
 Commit messages style: https://habr.com/ru/post/183646/
